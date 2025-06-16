@@ -6,53 +6,54 @@ classDiagram
 
 class Room{
 - int id NN
-<get/set>- string title NN
-<get>- string slug NN
-<get/set>- string image NN
-<get/set>- string localisation NN
-<get/set>- string keywords NN
-<get/set>- string description NN
+- string title NN
+- string slug NN
+- string image NN
+- string localisation NN
+- string keywords NN
+- string description NN
 
-<get/set>- bool available NN
-<get/set>- bool isReserved NN
+- bool available NN
+- User owner NN
 
-<get/set>- User owner
-
-<get/set>- int capacity NN
-<get/set>- Equipement equipement
-<get/set>- Advantage advantages 
+- int capacity NN
+- Equipement equipement
+- Advantage advantages 
 } 
 
 
 class User{
--int id
--string email
--string username
--string password
-- int roles
+-int id NN
+-string email NN
+-string phoneNumber NN
+-string firstName NN
+-string lastName NN
+-string password NN
+- int roles NN
 - DateTime created_at
 }
 
 class Equipement { 
-    -int id 
-    -string title 
-    -string slug
-    -string image
+    -int id NN
+    -string title NN 
+    -string slug NN
+    -string image NN
+    -string type 
 }
 
 class Advantage { 
-    -int id 
-    -string title 
-    -string slug
-    -string image
+    -int id NN
+    -string title NN 
+    -string slug NN
+    -string image NN 
 }
 
 class Reservation{
-    -User client
-    -Room rentedRoom
-    - DateTime reservationStart
-    - DateTime reservationEnd
-    -bool pending
+    -User client NN
+    -Room rentedRoom NN
+    - DateTime reservationStart NN
+    - DateTime reservationEnd NN
+    - bool pending
 }
 
 
