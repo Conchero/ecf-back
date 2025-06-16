@@ -14,7 +14,7 @@ class Room{
 <get/set>- string description NN
 
 <get/set>- bool available NN
-<get/set>- int isReserved NN
+<get/set>- bool isReserved NN
 
 <get/set>- User owner
 
@@ -52,14 +52,15 @@ class Reservation{
     -Room rentedRoom
     - DateTime reservationStart
     - DateTime reservationEnd
+    -bool pending
 }
 
 
-User "1" -- "0..*" Room 
+User "1" -- "*" Room 
 Room "*" -- "0..*" Equipement 
 Room "*" -- "*" Advantage 
-User "*" -- "0..*" Reservation
-Room "*" -- "0..*" Reservation
+User "1" -- "0..*" Reservation
+Room "1" -- "*" Reservation
 
 ```
 
@@ -78,6 +79,7 @@ class RoomController{
 
 class ReservationController{
     -create()
+    -validate()
     -edit()
     -delete()
 }
@@ -120,5 +122,34 @@ classDiagram
     -delete(string slug)
   }
 
+  class ReservationService {
+    -send5daysLeftReservationAlert()
+  }
+
+    class ModerationService {
+    -approve(Reservation reservation)
+    -reject(Reservation reservation)
+  }
+
 
 ```
+
+
+# Event Listener
+
+```mermaid
+
+classDiagram
+
+
+class ReservationListener{
+    -onReservationCreated()
+    -onReservationValidated()
+    -onReservationDeleted()
+    -onReservationUpdated()
+}
+
+class UserListener{
+       -onUserLogin()
+    -onUserValidated()
+}
