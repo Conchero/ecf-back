@@ -64,7 +64,9 @@ Sur la page principale je peux accéder à mes réservations
 #### Page Liste réservation
 ---
 
-Cette page listant mes réserve me permet de les modifier ou supprimer 
+Cette page listant mes réserve me permet de voir l'état de mes demandes (en attentes/ accépté)
+
+de les modifier ou supprimer 
 
 Si je veux modifier une réservation le calendrier s'affiche sous forme de pop et je peux modifier ma date
 

@@ -75,10 +75,16 @@ class RoomAdvantage{
 }
 
 User "1" -- "*" Room 
-Room "*" -- "0..*" Equipement 
-Room "*" -- "*" Advantage 
 User "1" -- "0..*" Reservation
 Room "1" -- "*" Reservation
+Room "1" -- "*" RoomEquipement
+Room "1" -- "*" RoomSoftware
+Room "1" -- "*" RoomAdvantage
+Equipement "1" -- "*" RoomEquipement
+Software "1" -- "*" RoomSoftware
+Advantage "1" -- "*" RoomAdvantage
+
+
 
 ```
 
