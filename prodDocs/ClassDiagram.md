@@ -8,17 +8,15 @@ class Room{
 - int id NN
 - string title NN
 - string slug NN
+
 - string image NN
 - string localisation NN
 - string keywords NN
 - string description NN
+- int capacity NN
 
 - bool available NN
 - User owner NN
-
-- int capacity NN
-- Equipement[] equipement
-- Advantage[] advantages 
 } 
 
 
@@ -37,16 +35,20 @@ class Equipement {
     -int id NN
     -string title NN 
     -string slug NN
-    -string image NN
-    -string type 
+}
+
+class Software { 
+    -int id NN
+    -string title NN 
+    -string slug NN
 }
 
 class Advantage { 
     -int id NN
     -string title NN 
     -string slug NN
-    -string image NN 
 }
+
 
 class Reservation{
     -User client NN
@@ -56,6 +58,21 @@ class Reservation{
     - bool pending
 }
 
+
+class RoomEquipement{
+    Room assignedRoom NN
+    Equipement assignedEquipement NN
+}
+
+class RoomSoftware{
+    Room assignedRoom NN
+    Software assignedSoftware NN
+}
+
+class RoomAdvantage{
+    Room assignedRoom NN
+    Advantage assignedAdvantage NN
+}
 
 User "1" -- "*" Room 
 Room "*" -- "0..*" Equipement 
