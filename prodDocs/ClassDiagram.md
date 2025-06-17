@@ -17,6 +17,8 @@ class Room{
 
 - bool available NN
 - User owner NN
+
+-
 } 
 
 
