@@ -107,6 +107,9 @@
         <mxCell id="WIfyMI-WzecUwXFEvHSk-26" value="Validate Choice" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="340" y="830" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="_BTFapLuZQAEqK3-PuFU-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIfyMI-WzecUwXFEvHSk-30" target="_BTFapLuZQAEqK3-PuFU-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <UserObject label="Send Reservation Request" link="https://github.com/Conchero/ecf-back/blob/FluxDiagram/prodDocs/Algoritme/Admin/SendReservationRequest.drawio" id="WIfyMI-WzecUwXFEvHSk-30">
           <mxCell style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;size=0.08333333333333333;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
             <mxGeometry x="340" y="960" width="120" height="60" as="geometry" />
@@ -139,6 +142,9 @@
         </UserObject>
         <mxCell id="_BTFapLuZQAEqK3-PuFU-5" value="Check Room" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="340" y="460" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="_BTFapLuZQAEqK3-PuFU-7" value="See Reservation List" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="340" y="1070" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
