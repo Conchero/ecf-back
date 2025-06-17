@@ -17,8 +17,8 @@ class Room{
 - User owner NN
 
 - int capacity NN
-- Equipement equipement
-- Advantage advantages 
+- Equipement[] equipement
+- Advantage[] advantages 
 } 
 
 
