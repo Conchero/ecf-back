@@ -61,11 +61,18 @@ class Room
     #[ORM\ManyToMany(targetEntity: Advantage::class, inversedBy: 'rooms')]
     private Collection $advantages;
 
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'rentedRoom')]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->equipments = new ArrayCollection();
         $this->softwares = new ArrayCollection();
         $this->advantages = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -256,6 +263,36 @@ class Room
     public function removeAdvantage(Advantage $advantage): static
     {
         $this->advantages->removeElement($advantage);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setRentedRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getRentedRoom() === $this) {
+                $reservation->setRentedRoom(null);
+            }
+        }
 
         return $this;
     }

@@ -84,6 +84,7 @@ Room "*" -- "*" Equipment
 Room "*" -- "*" Software
 Room "1" -- "*" Advantage
 Reservation "1" -- "*" Notification
+Notification "*" -- "1" User
 
 
 
@@ -131,6 +132,12 @@ class EquipementController{
 }
 
 class AdvantageController{
+    -create()
+    -edit()
+    -delete()
+}
+
+class NotificationController{
     -create()
     -edit()
     -delete()
