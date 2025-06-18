@@ -20,7 +20,7 @@ class Room{
 
 -Equipment[] roomEquipment
 -Software[] roomSoftware
--Advantage[] room
+-Advantage[] roomAdvantage
 
 } 
 
