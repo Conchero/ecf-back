@@ -11,13 +11,16 @@ class Room{
 
 - string image NN
 - string localisation NN
-- string keywords NN
-- string description NN
 - int capacity NN
+- text keywords 
+- text description 
 
 - bool available NN
 - User owner NN
 
+-Equipment equipments
+-Software softwares
+-Advantage advantages
 } 
 
 
@@ -31,60 +34,58 @@ class User{
 -string password NN
 - int roles NN
 - DateTime created_at
+
 }
 
 class Equipment { 
     -int id NN
     -string title NN 
     -string slug NN
+    -Room rooms
 }
 
 class Software { 
     -int id NN
     -string title NN 
     -string slug NN
+    -Room rooms
 }
 
 class Advantage { 
     -int id NN
     -string title NN 
     -string slug NN
+    -Room rooms
 }
 
 
 class Reservation{
-    -User client NN
-    -Room rentedRoom NN
+    - int id NN
+    - string slug
+    - User client NN
+    - Room rentedRoom NN
     - DateTime reservationStart NN
     - DateTime reservationEnd NN
     - bool pending
 }
 
 
-class RoomEquipment{
-    string roomSlug NN
-    string equipmentSlug NN
+class Notification{
+    - int id NN
+    - Reservation reservation NN
+    - string message 
 }
 
-class RoomSoftware{
-    string roomSlug NN
-    string softwareSlug NN
-}
-
-class RoomAdvantage{
-    string roomSlug NN
-    string advantageSlug NN
-}
 
 User "1" -- "*" Room 
 User "1" -- "0..*" Reservation
 Room "1" -- "*" Reservation
-Room "1" -- "*" RoomEquipment
-Room "1" -- "*" RoomSoftware
-Room "1" -- "*" RoomAdvantage
-Equipment "1" -- "*" RoomEquipment
-Software "1" -- "*" RoomSoftware
-Advantage "1" -- "*" RoomAdvantage
+Room "*" -- "*" Equipment
+Room "*" -- "*" Software
+Room "1" -- "*" Advantage
+Reservation "1" -- "*" Notification
+
+
 
 
 

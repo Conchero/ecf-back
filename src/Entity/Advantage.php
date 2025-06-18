@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EquipmentRepository;
+use App\Repository\AdvantageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: EquipmentRepository::class)]
-class Equipment
+#[ORM\Entity(repositoryClass: AdvantageRepository::class)]
+class Advantage
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,7 +24,7 @@ class Equipment
     /**
      * @var Collection<int, Room>
      */
-    #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'equipments')]
+    #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'advantages')]
     private Collection $rooms;
 
     public function __construct()
@@ -80,7 +80,7 @@ class Equipment
     {
         if (!$this->rooms->contains($room)) {
             $this->rooms->add($room);
-            $room->addEquipment($this);
+            $room->addAdvantage($this);
         }
 
         return $this;
@@ -89,7 +89,7 @@ class Equipment
     public function removeRoom(Room $room): static
     {
         if ($this->rooms->removeElement($room)) {
-            $room->removeEquipment($this);
+            $room->removeAdvantage($this);
         }
 
         return $this;
