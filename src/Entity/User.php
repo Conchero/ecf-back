@@ -40,11 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100)]
     private ?string $lastName = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $created_at = null;
-
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $created_at = null;
 
     public function getId(): ?int
     {
@@ -155,18 +155,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(?\DateTimeImmutable $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -175,6 +163,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(?\DateTimeImmutable $created_at): static
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

@@ -18,10 +18,6 @@ class Room{
 - bool available NN
 - User owner NN
 
--Equipment[] roomEquipment
--Software[] roomSoftware
--Advantage[] roomAdvantage
-
 } 
 
 
@@ -31,6 +27,7 @@ class User{
 -string phoneNumber NN
 -string firstName NN
 -string lastName NN
+-string slug NN
 -string password NN
 - int roles NN
 - DateTime created_at
@@ -64,15 +61,30 @@ class Reservation{
 }
 
 
+class RoomEquipment{
+    string roomSlug NN
+    string equipmentSlug NN
+}
 
+class RoomSoftware{
+    string roomSlug NN
+    string softwareSlug NN
+}
+
+class RoomAdvantage{
+    string roomSlug NN
+    string advantageSlug NN
+}
 
 User "1" -- "*" Room 
 User "1" -- "0..*" Reservation
 Room "1" -- "*" Reservation
-Room "*" -- "*" Equipment
-Room "*" -- "*" Software
-Room "*" -- "*" Advantage
-
+Room "1" -- "*" RoomEquipment
+Room "1" -- "*" RoomSoftware
+Room "1" -- "*" RoomAdvantage
+Equipment "1" -- "*" RoomEquipment
+Software "1" -- "*" RoomSoftware
+Advantage "1" -- "*" RoomAdvantage
 
 
 

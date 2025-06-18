@@ -13,10 +13,10 @@ class Equipment
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     public function getId(): ?int
