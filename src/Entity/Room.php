@@ -22,7 +22,7 @@ class Room
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\Column(length: 80)]
+    #[ORM\Column(length: 255)]
     private ?string $localisation = null;
 
     #[ORM\Column(length: 255)]
@@ -32,14 +32,14 @@ class Room
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?bool $available = null;
-
-    #[ORM\ManyToOne(inversedBy: 'rooms')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $owner = null;
+    private ?int $capacity = null;
 
     #[ORM\Column]
-    private ?int $capacity = null;
+    private ?bool $available = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
 
     public function getId(): ?int
     {
@@ -111,9 +111,21 @@ class Room
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescirption(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCapacity(): ?int
+    {
+        return $this->capacity;
+    }
+
+    public function setCapacity(int $capacity): static
+    {
+        $this->capacity = $capacity;
 
         return $this;
     }
@@ -138,18 +150,6 @@ class Room
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
-
-        return $this;
-    }
-
-    public function getCapacity(): ?int
-    {
-        return $this->capacity;
-    }
-
-    public function setCapacity(int $capacity): static
-    {
-        $this->capacity = $capacity;
 
         return $this;
     }
