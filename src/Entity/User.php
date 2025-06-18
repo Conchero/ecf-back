@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,10 +34,11 @@ class User
     private ?string $password = null;
 
     #[ORM\Column]
-    private ?int $roles = null;
+    private array $roles = [];
 
-    #[ORM\Column]
-    private ?\DateTime $created_at = null;
+#[ORM\Column(type: 'datetime_immutable')]
+private ?\DateTimeImmutable $createdAt = null;
+
 
     public function getId(): ?int
     {
@@ -100,27 +105,45 @@ class User
         return $this;
     }
 
-    public function getRoles(): ?int
+
+    public function getRoles(): array
     {
-        return $this->roles;
+        $roles = $this->roles;
+
+        // Toujours garantir qu’un utilisateur a au moins un rôle de base
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return $roles;
     }
 
-    public function setRoles(int $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
-
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTime
+
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
+    }
+    public function getUserIdentifier(): string
+    {
+        return $this->email; // ou $this->username si tu préfères t'identifier avec le username
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Si tu stockes un mot de passe en clair temporairement, tu peux le vider ici.
+        // Exemple : $this->plainPassword = null;
     }
 }

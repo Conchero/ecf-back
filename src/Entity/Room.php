@@ -111,7 +111,7 @@ class Room
         return $this->description;
     }
 
-    public function setDescirption(string $description): static
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
