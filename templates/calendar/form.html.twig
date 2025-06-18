@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Choisir une plage de dates</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+</head>
+<body>
+    <h2>Choisissez une plage de dates</h2>
+
+    <form method="post" action="{{ path('calendar_handle') }}">
+        <input
+            type="text"
+            id="date_range"
+            name="date_range"
+            placeholder="Choisir la plage de dates"
+            autocomplete="off"
+        >
+        <button type="submit">Envoyer</button>
+    </form>
+
+    <script>
+        const reservedRanges = {{ reservedRanges|json_encode|raw }};
+
+        flatpickr("#date_range", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            locale: "fr",
+            disable: reservedRanges
+        });
+    </script>
+</body>
+</html>
