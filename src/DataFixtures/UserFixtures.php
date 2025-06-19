@@ -28,7 +28,7 @@ class UserFixtures extends Fixture
             ->setFirstName('Admin')
             ->setLastName('User')
             ->setPassword($this->hasher->hashPassword($admin, 'adminpass'))
-            ->setRoles(['ROLE_ADMIN', 'ROLE_USER']) // ⚠️ Toujours inclure ROLE_USER aussi
+            ->setRoles(['ROLE_ADMIN', 'ROLE_USER']) 
             ->setCreatedAt(new DateTimeImmutable());
 
         $manager->persist($admin);
@@ -44,7 +44,7 @@ class UserFixtures extends Fixture
                 ->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
                 ->setPassword($this->hasher->hashPassword($user, 'userpass'))
-                ->setRoles(['ROLE_USER']) // juste user
+                ->setRoles(['ROLE_USER']) 
                 ->setCreatedAt(new DateTimeImmutable());
 
             $manager->persist($user);
