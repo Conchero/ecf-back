@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\RoomEquipment;
+use App\Entity\Notification;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<RoomEquipment>
+ * @extends ServiceEntityRepository<Notification>
  */
-class RoomEquipmentRepository extends ServiceEntityRepository
+class NotificationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, RoomEquipment::class);
+        parent::__construct($registry, Notification::class);
     }
 
 //    /**
-//     * @return RoomEquipment[] Returns an array of RoomEquipment objects
+//     * @return Notification[] Returns an array of Notification objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
+//        return $this->createQueryBuilder('n')
+//            ->andWhere('n.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
+//            ->orderBy('n.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?RoomEquipment
+//    public function findOneBySomeField($value): ?Notification
 //    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
+//        return $this->createQueryBuilder('n')
+//            ->andWhere('n.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()

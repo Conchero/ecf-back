@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\SoftwareRepository;
+use App\Repository\EquipmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SoftwareRepository::class)]
-class Software
+#[ORM\Entity(repositoryClass: EquipmentRepository::class)]
+class Equipment
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,7 +24,7 @@ class Software
     /**
      * @var Collection<int, Room>
      */
-    #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'softwares')]
+    #[ORM\ManyToMany(targetEntity: Room::class, mappedBy: 'equipments')]
     private Collection $rooms;
 
     public function __construct()
@@ -76,20 +76,20 @@ class Software
         return $this->rooms;
     }
 
-    public function addRooms(Room $_room): static
+    public function addRoom(Room $room): static
     {
-        if (!$this->rooms->contains($_room)) {
-            $this->rooms->add($_room);
-            $_room->addSoftware($this);
+        if (!$this->rooms->contains($room)) {
+            $this->rooms->add($room);
+            $room->addEquipment($this);
         }
 
         return $this;
     }
 
-    public function removeRooms(Room $_room): static
+    public function removeRoom(Room $room): static
     {
-        if ($this->rooms->removeElement($_room)) {
-            $_room->removeSoftware($this);
+        if ($this->rooms->removeElement($room)) {
+            $room->removeEquipment($this);
         }
 
         return $this;
