@@ -22,7 +22,7 @@ class AdvantageFixtures extends Fixture
 
             $advantage
                 ->setTitle($name)
-                ->setSlug($slug); // ✅ Ajout du slug obligatoire
+                ->setSlug($slug); 
 
             $manager->persist($advantage);
             $this->addReference('advantage-' . $i, $advantage);
