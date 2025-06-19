@@ -34,9 +34,11 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
                 ->setRentedRoom($room)
                 ->setReservationStart($start)
                 ->setReservationEnd($end)
-                ->setIsPending($faker->boolean(30)); // 30% en attente
+                ->setIsPending($faker->boolean(30));
 
             $manager->persist($reservation);
+
+            $this->addReference('reservation-' . $i, $reservation);
         }
 
         $manager->flush();
