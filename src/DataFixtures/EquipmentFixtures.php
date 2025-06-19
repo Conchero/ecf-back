@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
-use App\Entity\Equipement;
+use App\Entity\Equipment; 
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
@@ -14,11 +14,11 @@ class EquipementFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         for ($i = 0; $i < 10; $i++) {
-            $equipement = new Equipement();
-            $equipement->setTitle($faker->word());
+            $equipment = new Equipment(); 
+            $equipment->setTitle($faker->word());
 
-            $manager->persist($equipement);
-            $this->addReference('equipement-' . $i, $equipement);
+            $manager->persist($equipment);
+            $this->addReference('equipement-' . $i, $equipment);
         }
 
         $manager->flush();

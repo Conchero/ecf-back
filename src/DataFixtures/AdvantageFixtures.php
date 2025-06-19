@@ -6,16 +6,23 @@ use Faker\Factory;
 use App\Entity\Advantage;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class AdvantageFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $slugger = new AsciiSlugger();
 
         for ($i = 0; $i < 10; $i++) {
             $advantage = new Advantage();
-            $advantage->setTitle($faker->words(2, true));
+            $name = $faker->words(2, true);
+            $slug = $slugger->slug($name)->lower();
+
+            $advantage
+                ->setTitle($name)
+                ->setSlug($slug); // ✅ Ajout du slug obligatoire
 
             $manager->persist($advantage);
             $this->addReference('advantage-' . $i, $advantage);

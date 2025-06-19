@@ -296,14 +296,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function getUserIdentifier(): string
-    {
-        return $this->email; // ou $this->username si tu préfères t'identifier avec le username
-    }
 
-    public function eraseCredentials(): void
-    {
-        // Si tu stockes un mot de passe en clair temporairement, tu peux le vider ici.
-        // Exemple : $this->plainPassword = null;
-    }
+
+
 }
