@@ -21,10 +21,12 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
             $end = (clone $start)->modify('+' . rand(1, 120) . ' hours');
 
             /** @var \App\Entity\User $client */
-            $client = $this->getReference('user-' . $faker->numberBetween(0, 9));
+            $client = $this->getReference('user-' . $faker->numberBetween(0, 69), \App\Entity\User::class);
+
 
             /** @var \App\Entity\Room $room */
-            $room = $this->getReference('room-' . $faker->numberBetween(0, 19));
+            $room = $this->getReference('room-' . $faker->numberBetween(0, 19), \App\Entity\Room::class);
+
 
             $reservation
                 ->setSlug('reservation-' . $i)

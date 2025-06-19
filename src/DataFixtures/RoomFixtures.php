@@ -17,7 +17,8 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
 
 for ($i = 0; $i < 20; $i++) {
     /** @var \App\Entity\User $owner */
-    $owner = $this->getReference('user-' . $faker->numberBetween(0, 9));
+$owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
+
 
     $room = new Room();
     $room->setTitle($faker->company . ' Salle')
@@ -31,7 +32,9 @@ for ($i = 0; $i < 20; $i++) {
         ->setOwner($owner)
     ;
 
-    $manager->persist($room);
+$manager->persist($room);
+$this->addReference('room-' . $i, $room);
+
 }
 
 
