@@ -7,7 +7,7 @@ use App\Entity\Equipment;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
-class EquipementFixtures extends Fixture
+class EquipmentFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
@@ -15,10 +15,15 @@ class EquipementFixtures extends Fixture
 
         for ($i = 0; $i < 10; $i++) {
             $equipment = new Equipment(); 
-            $equipment->setTitle($faker->word());
+            $title = ucfirst($faker->word());
+            $slug = strtolower(str_replace(' ', '-', $title)) . '-' . $i;
+
+            $equipment
+                ->setTitle($title)
+                ->setSlug($slug);
 
             $manager->persist($equipment);
-            $this->addReference('equipement-' . $i, $equipment);
+            $this->addReference('equipment-' . $i, $equipment);
         }
 
         $manager->flush();
