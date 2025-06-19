@@ -15,14 +15,14 @@ class SoftwareCrudController extends AbstractCrudController
         return Software::class;
     }
 
-    /*
+    
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
+            IdField::new('id')->hideOnForm(),
             TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('slug')->hideOnForm(),
         ];
     }
-    */
+    
 }
