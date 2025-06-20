@@ -21,7 +21,7 @@ class EquipmentCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('title'),
-            TextField::new('slug')->hideOnForm(),
+            TextField::new('slug'),
           
         ];
     }
