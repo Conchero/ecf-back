@@ -94,4 +94,8 @@ class Advantage
 
         return $this;
     }
+    public function __toString(): string
+    {
+        return $this->getTitle(); // ou tout autre champ pertinent
+    }
 }

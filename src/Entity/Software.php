@@ -94,4 +94,8 @@ class Software
 
         return $this;
     }
+    public function __toString(): string
+    {
+        return $this->title; // ou tout autre champ pertinent
+    }
 }
