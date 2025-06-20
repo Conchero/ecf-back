@@ -34,7 +34,8 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
                 ->setRentedRoom($room)
                 ->setReservationStart($start)
                 ->setReservationEnd($end)
-                ->setIsPending($faker->boolean(30));
+                
+                ->setStatus($faker->randomElement(['pending', 'accepted', 'rejected']));
 
             $manager->persist($reservation);
 
