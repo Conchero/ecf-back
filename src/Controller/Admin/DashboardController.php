@@ -8,9 +8,10 @@ use App\Entity\Software;
 use App\Entity\Advantage;
 use App\Entity\Equipment;
 use App\Entity\Reservation;
-use App\Entity\Notification;
+// plus besoin de Notification Entity
+use App\Service\NotificationService;
 
-use App\Controller\Admin\ReservationCrudController; // <- Correction ici
+use App\Controller\Admin\ReservationCrudController;
 
 use Symfony\Component\HttpFoundation\Response;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -23,6 +24,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
+    private NotificationService $notificationService;
+
+    public function __construct(NotificationService $notificationService)
+    {
+        $this->notificationService = $notificationService;
+    }
+
     public function index(): Response
     {
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
@@ -43,7 +51,10 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToRoute('Retour au site', 'fas fa-home', 'app_home');
 
-        yield MenuItem::linkToCrud('Notifications', 'fas fa-bell', Notification::class);
+        $urgentCount = $this->notificationService->countNotifications();
+
+        yield MenuItem::linkToCrud('Notifications', 'fas fa-bell', Reservation::class)
+             ->setBadge($urgentCount > 0 ? (string) $urgentCount : null);
 
         yield MenuItem::linkToCrud('Réservations', 'fas fa-calendar-alt', Reservation::class);
 
