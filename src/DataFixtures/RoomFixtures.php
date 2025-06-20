@@ -48,6 +48,4 @@ $this->addReference('room-' . $i, $room);
             UserFixtures::class,
         ];
     }
-
 }
-

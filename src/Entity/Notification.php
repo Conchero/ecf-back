@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\NotificationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
@@ -26,6 +27,10 @@ class Notification
 
     #[ORM\Column(nullable: true)]
     private ?bool $is_read = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'notifications')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $receiver = null;
 
     public function getId(): ?int
     {
@@ -83,6 +88,18 @@ class Notification
     public function setIsRead(?bool $is_read): static
     {
         $this->is_read = $is_read;
+
+        return $this;
+    }
+
+    public function getReceiver(): ?User
+    {
+        return $this->receiver;
+    }
+
+    public function setReceiver(?User $receiver): static
+    {
+        $this->receiver = $receiver;
 
         return $this;
     }

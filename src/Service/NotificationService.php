@@ -12,12 +12,6 @@ class NotificationService
         $this->reservationRepository = $reservationRepository;
     }
 
-    /**
-     * Retourne les notifications (réservations en attente dans les 5 jours).
-     * Chaque notification est un tableau simple avec message + id réservation, etc.
-     *
-     * @return array<int, array{reservationId:int, message:string}>
-     */
     public function getNotifications(): array
     {
         $now = new \DateTime();
@@ -40,7 +34,7 @@ class NotificationService
                     'Réservation #%d à valider avant le %s',
                     $reservation->getId(),
                     $reservation->getReservationStart()->format('d/m/Y')
-                )
+                ),
             ];
         }
 
