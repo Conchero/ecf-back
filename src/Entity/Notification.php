@@ -28,7 +28,8 @@ class Notification
     #[ORM\Column(nullable: true)]
     private ?bool $is_read = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'notifications')]
+
+    #[ORM\ManyToOne(inversedBy: 'notifications')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $receiver = null;
 

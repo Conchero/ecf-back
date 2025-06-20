@@ -76,6 +76,7 @@ class Reservation{
 
 class Notification{
     - int id NN
+    - User receiver NN
     - Reservation reservation NN
     - string message
     - string slug 

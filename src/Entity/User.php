@@ -240,22 +240,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->notifications;
     }
 
+
     public function addNotification(Notification $notification): static
     {
         if (!$this->notifications->contains($notification)) {
             $this->notifications->add($notification);
             $notification->setReceiver($this);
         }
+
         return $this;
     }
 
     public function removeNotification(Notification $notification): static
     {
         if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
             if ($notification->getReceiver() === $this) {
                 $notification->setReceiver(null);
             }
         }
+
         return $this;
     }
+
 }
