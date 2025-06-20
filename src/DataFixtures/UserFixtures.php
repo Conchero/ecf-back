@@ -19,7 +19,9 @@ class UserFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
+
         $users = [];
+
         // 👤 1 admin user
         $admin = new User();
         $admin
@@ -32,7 +34,9 @@ class UserFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN', 'ROLE_USER']) 
             ->setCreatedAt(new DateTimeImmutable());
 
-            $users[] = $admin;
+
+        $users[] = $admin;
+
 
         $manager->persist($admin);
         $this->addReference('user-admin', $admin);
@@ -50,8 +54,10 @@ class UserFixtures extends Fixture
                 ->setRoles(['ROLE_USER']) 
                 ->setCreatedAt(new DateTimeImmutable());
 
+
                 
-            $users[] = $user;
+
+
 
             $manager->persist($user);
             $this->addReference('user-' . $i, $user);
@@ -59,4 +65,6 @@ class UserFixtures extends Fixture
 
         $manager->flush();
     }
+
 }
+

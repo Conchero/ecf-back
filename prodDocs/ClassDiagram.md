@@ -21,20 +21,24 @@ class Room{
 -Equipment equipments
 -Software softwares
 -Advantage advantages
+
+-Reservation reservations
 } 
 
 
 class User{
 -int id NN
+
 -string email NN
 -string phoneNumber NN
 -string firstName NN
 -string lastName NN
--string slug NN
 -string password NN
+
 - int roles NN
 - DateTime created_at
 
+-Reservation reservations
 }
 
 class Equipment { 
@@ -73,16 +77,18 @@ class Reservation{
 class Notification{
     - int id NN
     - Reservation reservation NN
-    - string message 
+    - string message
+    - string slug 
+    - bool is_read
 }
 
 
 User "1" -- "*" Room 
-User "1" -- "0..*" Reservation
+User "1" -- "*" Reservation
 Room "1" -- "*" Reservation
 Room "*" -- "*" Equipment
 Room "*" -- "*" Software
-Room "1" -- "*" Advantage
+Room "*" -- "*" Advantage
 Reservation "1" -- "*" Notification
 Notification "*" -- "1" User
 
@@ -99,20 +105,20 @@ Notification "*" -- "1" User
 
 classDiagram
 
-class RoomController{
+class RoomController ~~Easy Admin~~{
     -create()
     -edit()
     -delete()
 }
 
-class ReservationController{
+class ReservationController ~~Easy Admin~~{
     -create()
     -validate()
     -edit()
     -delete()
 }
 
-class UserController{
+class UserController~~Easy Admin~~{
     -newPassword()
     -profile()
     -delete()
@@ -125,23 +131,18 @@ class SecurityController{
     -logout()
 }
 
-class EquipementController{
+class EquipementController~~Easy Admin~~{
     -create()
     -edit()
     -delete()
 }
 
-class AdvantageController{
+class AdvantageController~~Easy Admin~~{
     -create()
     -edit()
     -delete()
 }
 
-class NotificationController{
-    -create()
-    -edit()
-    -delete()
-}
 
 ```
 
@@ -150,21 +151,29 @@ class NotificationController{
 ```mermaid
 classDiagram
 
-     class ImageService {
+     class ImageService ~~Easy Admin~~{
     -upload(UploadedFile image)
     -compress(UploadedFile image)
     -delete(string slug)
   }
 
-  class ReservationService {
+  class ReservationAlertService {
     -send5daysLeftReservationAlert()
   }
 
-    class ModerationService {
+    class ReservationManagementService {
     -approve(Reservation reservation)
     -reject(Reservation reservation)
   }
 
+
+    class NotificationService {
+        createNotification(Reservation _res,string message)
+        sendNotification(User receiver)
+        checkNotificationArrivedToCorrectUser()
+        readNotification(string slug)
+        delete(string slug )
+  }
 
 ```
 
@@ -180,6 +189,7 @@ class ReservationListener{
     -onReservationCreated()
     -onReservationValidated()
     -onReservationDeleted()
+
     -onReservationUpdated()
 }
 

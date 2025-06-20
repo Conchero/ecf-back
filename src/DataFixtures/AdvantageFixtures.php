@@ -31,3 +31,4 @@ class AdvantageFixtures extends Fixture
         $manager->flush();
     }
 }
+

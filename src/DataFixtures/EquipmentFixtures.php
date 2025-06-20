@@ -29,3 +29,4 @@ class EquipmentFixtures extends Fixture
         $manager->flush();
     }
 }
+

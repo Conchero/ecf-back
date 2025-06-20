@@ -26,3 +26,4 @@ class SoftwareFixtures extends Fixture
         $manager->flush();
     }
 }
+
