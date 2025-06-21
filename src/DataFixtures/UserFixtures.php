@@ -27,7 +27,7 @@ class UserFixtures extends Fixture
         $admin
             ->setEmail('admin@admin.com')
             ->setPhoneNumber($faker->phoneNumber())
-            ->setSlug('admin')
+          
             ->setFirstName('Admin')
             ->setLastName('User')
             ->setPassword($this->hasher->hashPassword($admin, 'adminpass'))
@@ -47,7 +47,7 @@ class UserFixtures extends Fixture
             $user
                 ->setEmail($faker->unique()->safeEmail())
                 ->setPhoneNumber($faker->phoneNumber())
-                ->setSlug($faker->slug())
+        
                 ->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
                 ->setPassword($this->hasher->hashPassword($user, 'userpass'))

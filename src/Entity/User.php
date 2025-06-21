@@ -42,9 +42,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100)]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $slug = null;
-
+   
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
 
@@ -156,16 +154,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
+   
 
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
