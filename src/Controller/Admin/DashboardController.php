@@ -9,18 +9,16 @@ use App\Entity\User;
 use App\Entity\Software;
 use App\Entity\Advantage;
 use App\Entity\Equipment;
+use App\Service\NotificationService;
 use App\Controller\Admin\NotificationCrudController;
 use App\Controller\Admin\ReservationCrudController;
-use App\Service\NotificationService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
-#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
     private NotificationService $notificationService;
@@ -30,12 +28,11 @@ class DashboardController extends AbstractDashboardController
         $this->notificationService = $notificationService;
     }
 
+    #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-        $url = $routeBuilder->setController(ReservationCrudController::class)->generateUrl();
-
-        return $this->redirect($url);
+        // Rendu du dashboard personnalisé
+        return $this->render('admin/dashboard.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -59,29 +56,29 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Réservations', 'fas fa-calendar-alt', Reservation::class)
             ->setController(ReservationCrudController::class);
 
-        yield MenuItem::subMenu('Salles', 'fas fa-building', 'fas fa-bar')->setSubItems([
-            MenuItem::linkToCrud('toutes', 'fas fa-list', Room::class),
-            MenuItem::linkToCrud('créer', 'fas fa-plus', Room::class)->setAction(Crud::PAGE_NEW),
+        yield MenuItem::subMenu('Salles', 'fas fa-building')->setSubItems([
+            MenuItem::linkToCrud('Toutes', 'fas fa-list', Room::class),
+            MenuItem::linkToCrud('Créer', 'fas fa-plus', Room::class)->setAction(Crud::PAGE_NEW),
         ]);
 
-        yield MenuItem::subMenu('Equipements', 'fas fa-tools')->setSubItems([
-            MenuItem::linkToCrud('tous', 'fas fa-list', Equipment::class),
-            MenuItem::linkToCrud('créer', 'fas fa-plus', Equipment::class)->setAction(Crud::PAGE_NEW),
+        yield MenuItem::subMenu('Équipements', 'fas fa-tools')->setSubItems([
+            MenuItem::linkToCrud('Tous', 'fas fa-list', Equipment::class),
+            MenuItem::linkToCrud('Créer', 'fas fa-plus', Equipment::class)->setAction(Crud::PAGE_NEW),
         ]);
 
         yield MenuItem::subMenu('Ergonomiques', 'fas fa-heart')->setSubItems([
-            MenuItem::linkToCrud('tous', 'fas fa-list', Advantage::class),
-            MenuItem::linkToCrud('créer', 'fas fa-plus', Advantage::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Tous', 'fas fa-list', Advantage::class),
+            MenuItem::linkToCrud('Créer', 'fas fa-plus', Advantage::class)->setAction(Crud::PAGE_NEW),
         ]);
 
         yield MenuItem::subMenu('Logiciels', 'fas fa-laptop-code')->setSubItems([
-            MenuItem::linkToCrud('tous', 'fas fa-list', Software::class),
-            MenuItem::linkToCrud('créer', 'fas fa-plus', Software::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Tous', 'fas fa-list', Software::class),
+            MenuItem::linkToCrud('Créer', 'fas fa-plus', Software::class)->setAction(Crud::PAGE_NEW),
         ]);
 
         yield MenuItem::subMenu('Clients', 'fas fa-users')->setSubItems([
-            MenuItem::linkToCrud('tous', 'fas fa-list', User::class),
-            MenuItem::linkToCrud('créer', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
+            MenuItem::linkToCrud('Tous', 'fas fa-list', User::class),
+            MenuItem::linkToCrud('Créer', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
         ]);
     }
 }

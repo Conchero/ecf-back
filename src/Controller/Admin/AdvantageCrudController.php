@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Advantage;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
@@ -28,7 +29,7 @@ class AdvantageCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             TextField::new('title'),
-            TextField::new('slug'),
+         SlugField::new('slug')->setTargetFieldName('title'),
         ];
     }
 
