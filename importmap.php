@@ -16,4 +16,12 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
+
+      'calendar' => [
+        'path' => './assets/calendar.js',
+        'entrypoint' => true,
+    ],
+        'flatpickr' => [
+        'path' => './node_modules/flatpickr/dist/flatpickr.js',
+    ],
 ];
