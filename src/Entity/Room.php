@@ -297,10 +297,10 @@ class Room
 
         return $this;
     }
-public function toSlug(): string
-{
-    $slugger = new AsciiSlugger();
-    return strtolower($slugger->slug($this->title . '-' . $this->id));
-}
-
+    public function toSlug(): string
+    {
+        $slugger = new AsciiSlugger();
+        return strtolower($slugger->slug($this->title . '-' . $this->id));
+    }
+    
 }

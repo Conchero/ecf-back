@@ -7,33 +7,40 @@ use App\Entity\Room;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-// facon toslug
+use App\DataFixtures\UserFixtures;
+
 class RoomFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $rooms = [];
 
         for ($i = 0; $i < 20; $i++) {
-            /** @var \App\Entity\User $owner */
-            $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
-
             $room = new Room();
-            $room->setTitle($faker->company . ' Salle')
+            $room
+                ->setTitle($faker->company . ' Salle')
                 ->setImage('default.jpg')
                 ->setLocalisation($faker->address())
                 ->setKeywords(implode(', ', $faker->words(5)))
                 ->setDescription($faker->paragraph())
                 ->setIsAvailable($faker->boolean(90))
-                ->setCapacity($faker->numberBetween(10, 200))
-                ->setOwner($owner);
+                ->setCapacity($faker->numberBetween(10, 200));
+
+            $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
+            $room->setOwner($owner);
 
             $manager->persist($room);
-            $manager->flush(); 
+            $rooms[] = $room;
+        }
+
+        //flush pour générer les ID
+        $manager->flush();
+        // Deuxième boucle pour setSlug()
+        foreach ($rooms as $index => $room) {
             $room->setSlug($room->toSlug());
-
             $manager->persist($room);
-            $this->addReference('room-' . $i, $room);
+            $this->addReference('room-' . $index, $room);
         }
 
         $manager->flush();
