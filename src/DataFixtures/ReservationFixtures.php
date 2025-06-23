@@ -7,7 +7,9 @@ use App\Entity\Reservation;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-// facon toslug
+use App\DataFixtures\UserFixtures;
+use App\DataFixtures\RoomFixtures;
+
 class ReservationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
@@ -20,7 +22,10 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
             $start = $faker->dateTimeBetween('+0 days', '+30 days');
             $end = (clone $start)->modify('+' . rand(1, 120) . ' hours');
 
+            /** @var \App\Entity\User $client */
             $client = $this->getReference('user-' . $faker->numberBetween(0, 69), \App\Entity\User::class);
+
+            /** @var \App\Entity\Room $room */
             $room = $this->getReference('room-' . $faker->numberBetween(0, 19), \App\Entity\Room::class);
 
             $reservation
@@ -31,9 +36,9 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
                 ->setIsPending($faker->boolean(30));
 
             $manager->persist($reservation);
-            $manager->flush(); 
-
+            $manager->flush();
             $reservation->setSlug($reservation->toSlug());
+
             $manager->persist($reservation);
             $this->addReference('reservation-' . $i, $reservation);
         }

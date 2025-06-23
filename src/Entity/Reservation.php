@@ -116,11 +116,10 @@ class Reservation
         $this->is_pending = $is_pending;
 
         return $this;
-//     }
-// public function toSlug(): string
-// {
-//     $slugger = new AsciiSlugger();
-//     $base = 'notification-' . ($this->getReservation()?->getId() ?? uniqid());
-//     return strtolower($slugger->slug($base));
- }
+    }
+    public function toSlug(): string
+    {                   //pour générer  les 3 premières lettres du prénom du client
+        $prefix = substr(strtolower($this->getClient()?->getFirstName() ?? 'res'), 0, 3);
+        return $prefix . '-reservation-' . $this->getId();
+    }
 }
