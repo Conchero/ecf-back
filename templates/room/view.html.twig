@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la salle - {{ room.title }}{% endblock %}
+
+{% block body %}
+<h1>{{ room.title }}</h1>
+<p><strong>Localisation :</strong> {{ room.localisation }}</p>
+<p><strong>Capacité :</strong> {{ room.capacity }}</p>
+<p><strong>Description :</strong> {{ room.description }}</p>
+
+<h2>Équipements</h2>
+<ul>
+    {% for equip in room.equipments %}
+        <li>{{ equip.title }}</li>
+    {% else %}
+        <li>Aucun équipement</li>
+    {% endfor %}
+</ul>
+
+<h2>Avantages</h2>
+<ul>
+    {% for adv in room.advantages %}
+        <li>{{ adv.title }}</li>
+    {% else %}
+        <li>Aucun avantage</li>
+    {% endfor %}
+</ul>
+
+<h2>Logiciels</h2>
+<ul>
+    {% for soft in room.softwares %}
+        <li>{{ soft.title }}</li>
+    {% else %}
+        <li>Aucun logiciel</li>
+    {% endfor %}
+</ul>
+
+<p><a href="{{ path('app_room') }}">Retour à la liste</a></p>
+{% endblock %}

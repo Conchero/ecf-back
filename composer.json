@@ -7,6 +7,7 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "cocur/slugify": "^4.6",
         "doctrine/dbal": "^3",
         "doctrine/doctrine-bundle": "*",
         "doctrine/doctrine-migrations-bundle": "^3.4",
@@ -21,6 +22,7 @@
         "symfony/password-hasher": "6.4.*",
         "symfony/runtime": "6.4.*",
         "symfony/security-bundle": "6.4.*",
+        "symfony/ux-dropzone": "^2.26",
         "symfony/yaml": "6.4.*",
         "symfonycasts/tailwind-bundle": "^0.10.0"
     },

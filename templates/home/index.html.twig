@@ -7,14 +7,19 @@
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
+<div
+  class="hero min-h-screen"
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/soumi/OneDrive/Bureau/ecf back/ecf-back/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/Users/soumi/OneDrive/Bureau/ecf back/ecf-back/templates/home/index.html.twig</code></li>
-    </ul>
+>
+  <div class="hero-overlay"></div>
+  <div class="hero-content text-neutral-content text-center">
+    <div class="max-w-md">
+      <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
+      <p class="mb-5">
+        Inscrivez vous pour acceder a la reservation d'une salle.
+      </p>
+        <a class="btn btn-primary" href="#" role="button">S'inscrire</a>
+    </div>
+  </div>
 </div>
 {% endblock %}

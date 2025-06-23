@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une salle{% endblock %}
+
+{% block body %}
+<h1 class="text-center text-3xl my-4">Création d'une salle</h1>
+<div class="grid place-items-center">
+    <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-xl">
+        {{ form_start(roomForm) }}
+            {{ form_widget(roomForm) }}
+            <div class="mt-4 text-center">
+                <button type="submit" class="btn btn-primary px-6 py-2 rounded">
+                    Créer la salle
+                </button>
+            </div>
+        {{ form_end(roomForm) }}
+    </div>
+</div>
+
+<p class="my-4 flex items-center justify-center gap-2">
+    <a href="{{ path('app_room') }}" class="text-blue-600 hover:underline">Retour à la liste des salles</a>
+</p>
+{% endblock %}
