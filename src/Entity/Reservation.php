@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -115,5 +116,11 @@ class Reservation
         $this->is_pending = $is_pending;
 
         return $this;
-    }
+//     }
+// public function toSlug(): string
+// {
+//     $slugger = new AsciiSlugger();
+//     $base = 'notification-' . ($this->getReservation()?->getId() ?? uniqid());
+//     return strtolower($slugger->slug($base));
+ }
 }

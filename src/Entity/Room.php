@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Repository\RoomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -296,4 +297,10 @@ class Room
 
         return $this;
     }
+public function toSlug(): string
+{
+    $slugger = new AsciiSlugger();
+    return strtolower($slugger->slug($this->title . '-' . $this->id));
+}
+
 }
