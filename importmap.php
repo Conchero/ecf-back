@@ -16,12 +16,15 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
-
-      'calendar' => [
+    'calendar' => [
         'path' => './assets/calendar.js',
         'entrypoint' => true,
     ],
-        'flatpickr' => [
-        'path' => './node_modules/flatpickr/dist/flatpickr.js',
+    'flatpickr' => [
+        'version' => '4.6.13',
+    ],
+    'flatpickr/dist/flatpickr.min.css' => [
+        'version' => '4.6.13',
+        'type' => 'css',
     ],
 ];
