@@ -24,14 +24,26 @@ class AdvantageFixtures extends Fixture
             'Espace vestiaire sécurisé'
         ];
 
+        $advantages = [];
+
         foreach ($advantageNames as $i => $name) {
             $advantage = new Advantage();
             $advantage->setTitle($name);
 
             $manager->persist($advantage);
+            $advantages[] = $advantage;
+        }
+
+        $manager->flush();
+
+        // Génération des slugs maintenant que les IDs existent
+        foreach ($advantages as $i => $advantage) {
+            $advantage->setSlug($advantage->toSlug());
+            $manager->persist($advantage);
             $this->addReference('advantage-' . $i, $advantage);
         }
 
+        // Deuxième flush pour enregistrer les slugs grosse galère
         $manager->flush();
     }
 }
