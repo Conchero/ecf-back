@@ -47,7 +47,6 @@ class UserFixtures extends Fixture
             $user
                 ->setEmail($faker->unique()->safeEmail())
                 ->setPhoneNumber($faker->phoneNumber())
-        
                 ->setFirstName($faker->firstName())
                 ->setLastName($faker->lastName())
                 ->setPassword($this->hasher->hashPassword($user, 'userpass'))

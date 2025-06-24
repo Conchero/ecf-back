@@ -29,7 +29,6 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
             $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
             $room = new Room();
             $room->setTitle($faker->company . ' Salle')
-                ->makeSlug()
                 ->setImage('default.jpg')
                 ->setLocalisation($faker->address())
                 ->setKeywords(implode(', ', $faker->words(5)))
@@ -45,7 +44,7 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
                 ->addEquipment($this->getReference('equipment-' . $faker->numberBetween(0, 3), \App\Entity\Equipment::class))
                 ->addSoftware($this->getReference('software-' . $faker->numberBetween(0, 3), \App\Entity\Software::class))
                 ->addSoftware($this->getReference('software-' . $faker->numberBetween(0, 3), \App\Entity\Software::class))
-                ->addSoftware($this->getReference('software-' . $faker->numberBetween(0, 3), \App\Entity\Software::class));
+                ->addSoftware($this->getReference('software-' . $faker->numberBetween(0, 3), \App\Entity\Software::class))->makeSlug($i);
 
 
 
@@ -61,14 +60,6 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($room);
             $rooms[] = $room;
 
-        }
-
-        // flush pour générer les ID dans toutes les entités
-        $manager->flush();
-
-        foreach ($rooms as $index => $room) {
-            // Slug titre + index
-            $this->addReference('room-' . $index, $room);
         }
 
         $manager->flush();

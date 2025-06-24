@@ -17,7 +17,7 @@ class AdvantageFixtures extends Fixture
         for ($i = 0; $i < 10; $i++) {
             $advantage = new Advantage();
             $name = $faker->words(2, true);
-            $advantage->setTitle($name)->makeSlug();
+            $advantage->setTitle($name)->makeSlug($i);
 
             $manager->persist($advantage);
             $advantages[] = $advantage;

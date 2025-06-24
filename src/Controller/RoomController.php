@@ -39,7 +39,7 @@ final class RoomController extends AbstractController
             $room->setOwner($this->getUser());
 
             $slugify = new Slugify();
-            $room->setSlug($slugify->slugify($room->getTitle()));
+            $room->makeSlug($slugify->slugify($room->getTitle()));
 
             if ($image = $form->get('image')->getData()) {
                 $room->setImage($uploadService->upload($image, 'image'));

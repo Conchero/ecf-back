@@ -47,14 +47,21 @@ class Reservation
 
     public function getSlug(): ?string
     {
-        return $this->toSlug();
+        return $this->slug;
+    }
+    
+    
+    public function setSlug($slug): ?string
+    {
+        $this->slug = $slug;
+        return $this->slug;
     }
 
-  public function makeSlug(): static
+  public function makeSlug($_id): string
     {
-        $this->slug = $this->toSlug();
-
-        return $this;
+        $prefix = substr(strtolower($this->getClient()?->getFirstName() ?? 'res'), 0, 3);
+        $this->slug = $prefix . '-reservation-' . $_id ;
+        return $this->slug;
     }
 
     public function getRentedRoom(): ?Room
@@ -127,9 +134,5 @@ class Reservation
         return $this->status === 'rejected';
     }
 
-    public function toSlug(): string
-    {                   //pour générer  les 3 premières lettres du prénom du client
-        $prefix = substr(strtolower($this->getClient()?->getFirstName() ?? 'res'), 0, 3);
-        return $prefix . '-reservation-' . $this->getId();
-    }
+
 }

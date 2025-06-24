@@ -33,7 +33,7 @@ class NotificationFixtures extends Fixture implements DependentFixtureInterface
             $notification
                 ->setReservation($reservation)
                 ->setReceiver($receiver)
-                ->setMessage($faker->sentence())->makeSlug();
+                ->setMessage($faker->sentence())->makeSlug($i);
 
             $manager->persist($notification);
         }

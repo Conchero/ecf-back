@@ -72,14 +72,26 @@ class Notification
 
     public function getSlug(): ?string
     {
-        return $this->toSlug();
+        return $this->slug;
     }
 
-    public function makeSlug(): static
-    {
-        $this->slug = $this->toSlug();
 
-        return $this;
+    public function setSlug($slug): ?string
+    {
+        $this->slug = $slug;
+        return $this->slug;
+    }
+
+    public function makeSlug($_id): string
+    {
+        $slugger = new AsciiSlugger();
+
+        $prefixClient = substr(strtolower($this->getReservation()?->getClient()->getLastName() ?? 'res'), 0, 3);
+        $prefixRes = trim(substr(strtolower($this->getReservation()?->getRentedRoom()->getTitle() ?? 'res'), 0, 3));
+
+        $this->slug = strtolower($slugger->slug($prefixRes . "-" . $prefixClient . '-' . ($_id ?? $this->getReservation()->getClient()->getId() ?? "1")));
+
+        return $this->slug;
     }
 
     public function isRead(): ?bool
@@ -107,14 +119,5 @@ class Notification
     }
 
 
-    protected function toSlug(): string
-    {                   //pour générer  les 3 premières lettres du prénom du client
-        $slugger = new AsciiSlugger();
-
-        $prefixClient = substr(strtolower($this->getReservation()?->getClient()->getLastName() ?? 'res'), 0, 3);
-        $prefixRes = trim(substr(strtolower($this->getReservation()?->getRentedRoom()->getTitle() ?? 'res'), 0, 3));
-
-
-        return strtolower($slugger->slug($prefixRes . "-" . $prefixClient . '-' . ($this->id ?? $this->getReservation()->getClient()->getId() ?? "1")));
-    }
+   
 }

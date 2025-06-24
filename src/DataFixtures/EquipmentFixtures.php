@@ -18,7 +18,7 @@ class EquipmentFixtures extends Fixture
             $equipment = new Equipment();
 
             $title = ucfirst($faker->words(2, true));
-            $equipment->setTitle($title)->makeSlug();
+            $equipment->setTitle($title)->makeSlug($i);
 
             $manager->persist($equipment);
             $equipments[] = $equipment;

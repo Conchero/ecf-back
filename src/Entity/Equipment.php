@@ -59,14 +59,21 @@ class Equipment
 
     public function getSlug(): ?string
     {
-        return $this->toSlug();
+        return $this->slug;
     }
 
-    public function makeSlug(): static
+    public function setSlug($slug): ?string
     {
-        $this->slug = $this->toSlug();
+        $this->slug = $slug;
+        return $this->slug;
+    }
 
-        return $this;
+    public function makeSlug($_id): string
+    {
+        $slugger = new AsciiSlugger();
+         $this->slug = strtolower($slugger->slug($this->title . '-' . $_id));
+
+         return $this->slug;
     }
 
     /**
@@ -96,10 +103,5 @@ class Equipment
         return $this;
     }
 
-    public function toSlug(): string
-    {
-        $slugger = new AsciiSlugger();
-        return strtolower($slugger->slug($this->title . '-' . $this->id));
-    }
 
 }

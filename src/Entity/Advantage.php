@@ -62,12 +62,20 @@ class Advantage
         return $this->toSlug();
     }
 
-    public function makeSlug(): static
+    public function setSlug($slug): ?string
     {
-        $this->slug = $this->toSlug();
-
-        return $this;
+        $this->slug = $slug;
+        return $this->slug;
     }
+
+    public function makeSlug($_id): string
+    {
+        $slugger = new AsciiSlugger();
+         $this->slug = strtolower($slugger->slug($this->title . '-' . $_id));
+
+         return $this->slug;
+    }
+
 
     /**
      * @return Collection<int, Room>
