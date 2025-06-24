@@ -22,15 +22,15 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
         $rooms = [];
 
-//         for ($i = 0; $i < 20; $i++) {
+        //         for ($i = 0; $i < 20; $i++) {
 
-//             $room = new Room();
+        //             $room = new Room();
 
-//             /** @var \App\Entity\User $owner */
-//             $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
-//             $room = new Room();
-//             $room->setTitle($faker->company . ' Salle')
-//                 ->setImage('default.jpg')
+        //             /** @var \App\Entity\User $owner */
+        //             $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
+        //             $room = new Room();
+        //             $room->setTitle($faker->company . ' Salle')
+        //                 ->setImage('default.jpg')
         // 10 noms de salle avec leurs images correspondantes
         $roomTemplates = [
             'Loft Industriel'     => 'loft_industriel.jpg',
@@ -67,7 +67,7 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
             $room = new Room();
             $room
                 ->setTitle($title)
-                ->setImage($image)
+                ->setImage('uploads/images/rooms/' . $image)
                 ->setLocalisation($faker->address())
                 ->setKeywords(implode(', ', $faker->words(5)))
                 ->setDescription($descriptions[$i])
