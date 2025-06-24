@@ -34,12 +34,11 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
             $rooms[] = $room;
         }
 
-        //flush pour générer les ID
+        // flush pour générer les ID dans toutes les entités
         $manager->flush();
-        // Deuxième boucle pour setSlug()
+
         foreach ($rooms as $index => $room) {
-            $room->setSlug($room->toSlug());
-            $manager->persist($room);
+            // Slug titre + index
             $this->addReference('room-' . $index, $room);
         }
 

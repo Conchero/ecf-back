@@ -15,6 +15,7 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $reservations = [];
 
         for ($i = 0; $i < 30; $i++) {
             $reservation = new Reservation();
@@ -36,11 +37,13 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
                 ->setIsPending($faker->boolean(30));
 
             $manager->persist($reservation);
-            $manager->flush();
-            $reservation->setSlug($reservation->toSlug());
+            $reservations[] = $reservation;
+        }
 
-            $manager->persist($reservation);
-            $this->addReference('reservation-' . $i, $reservation);
+        $manager->flush();
+
+        foreach ($reservations as $index => $reservation) {
+            $this->addReference('reservation-' . $index, $reservation);
         }
 
         $manager->flush();
