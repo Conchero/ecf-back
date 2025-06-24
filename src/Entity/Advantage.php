@@ -59,15 +59,15 @@ class Advantage
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
+    // public function setSlug(string $slug): static
+    // {
+    //     $this->slug = $slug;
+    //     return $this;
+    // }
 
-        return $this;
-    }
 
     /**
      * @return Collection<int, Room>
@@ -96,9 +96,8 @@ class Advantage
         return $this;
     }
     public function toSlug(): string
-{
-    $slugger = new AsciiSlugger();
-    return strtolower($slugger->slug($this->title . '-' . $this->id));
-}
-
+    {
+        $slugger = new AsciiSlugger();
+        return strtolower($slugger->slug($this->title . '-' . $this->id));
+    }
 }

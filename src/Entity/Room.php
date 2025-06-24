@@ -102,15 +102,15 @@ class Room
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
+    // public function setSlug(string $slug): static
+    // {
+    //     $this->slug = $slug;
+    //     return $this;
+    // }
 
-        return $this;
-    }
 
     public function getImage(): ?string
     {
@@ -302,5 +302,4 @@ class Room
         $slugger = new AsciiSlugger();
         return strtolower($slugger->slug($this->title . '-' . $this->id));
     }
-    
 }

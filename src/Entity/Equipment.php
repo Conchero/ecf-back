@@ -59,15 +59,15 @@ class Equipment
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
+    // public function setSlug(string $slug): self
+    // {
+    //     $this->slug = $slug;
+    //     return $this;
+    // }
 
-        return $this;
-    }
 
     /**
      * @return Collection<int, Room>
