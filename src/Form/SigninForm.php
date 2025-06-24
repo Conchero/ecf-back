@@ -34,10 +34,7 @@ class SigninForm extends AbstractType
             ->add('phoneNumber', TextType::class, [
                 'label' => 'Numéro de téléphone',
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'S\'inscrire',
-                
-            ])
+            
         ;
     }
 
