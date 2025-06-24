@@ -27,7 +27,7 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
             $client = $this->getReference('user-' . $faker->numberBetween(0, 69), \App\Entity\User::class);
 
             /** @var \App\Entity\Room $room */
-            $room = $this->getReference('room-' . $faker->numberBetween(0, 19), \App\Entity\Room::class);
+            $room = $this->getReference('room-' . $faker->numberBetween(0, 9), \App\Entity\Room::class);
 
             $reservation
                 ->setClient($client)
@@ -41,7 +41,6 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
             $reservations[] = $reservation;
         }
 
-        $manager->flush();
 
         foreach ($reservations as $index => $reservation) {
             $this->addReference('reservation-' . $index, $reservation);

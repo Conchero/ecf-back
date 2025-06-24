@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use Faker\Factory;
 use App\Entity\Equipment;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -11,24 +10,26 @@ class EquipmentFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create('fr_FR');
-        $equipments = [];
+        // Liste de 10 équipements pour une salle de fête
+        $equipmentNames = [
+            'Système audio professionnel',
+            'Enceintes Bluetooth portables',
+            'Table de mixage DJ',
+            'Projecteur multimédia',
+            'Machine à fumée',
+            'Boule disco LED',
+            'Barres lumineuses RGB',
+            'Microphone sans fil',
+            'Éclairage stroboscopique',
+            'Table haute cocktail'
+        ];
 
-        for ($i = 0; $i < 10; $i++) {
+        foreach ($equipmentNames as $i => $name) {
             $equipment = new Equipment();
-
-            $title = ucfirst($faker->words(2, true));
-            $equipment->setTitle($title)->makeSlug($i);
+            $equipment->setTitle($name)->makeSlug($i);
 
             $manager->persist($equipment);
-            $equipments[] = $equipment;
-        }
-
-        $manager->flush();
-
-        foreach ($equipments as $index => $equipment) {
-            // setSlug() removed => we only use getSlug() in the entity
-            $this->addReference('equipment-' . $index, $equipment);
+            $this->addReference('equipment-' . $i, $equipment);
         }
 
         $manager->flush();

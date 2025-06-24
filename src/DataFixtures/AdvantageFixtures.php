@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use Faker\Factory;
 use App\Entity\Advantage;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -11,24 +10,27 @@ class AdvantageFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create('fr_FR');
-        $advantages = [];
+        // Liste de 10 avantages pour une salle de fête
+        $advantageNames = [
+            'Accès Wi-Fi haut débit',
+            'Parking privé gratuit',
+            'Climatisation réversible',
+            'Service de sécurité 24/7',
+            'Vaisselle et couverts inclus',
+            'Coin cuisine équipé',
+            'Toilettes PMR accessibles',
+            'Nettoyage post-événement',
+            'Système de sonorisation intégré',
+            'Espace vestiaire sécurisé'
+        ];
 
-        for ($i = 0; $i < 10; $i++) {
+        foreach ($advantageNames as $i => $name) {
             $advantage = new Advantage();
-            $name = $faker->words(2, true);
+            
             $advantage->setTitle($name)->makeSlug($i);
 
             $manager->persist($advantage);
-            $advantages[] = $advantage;
-        }
-
-        $manager->flush();
-
-        foreach ($advantages as $index => $advantage) {
-            // setSlug() removed => we only use getSlug() in the entity
-            // No need to set slug manually, it will be generated automatically
-            $this->addReference('advantage-' . $index, $advantage);
+            $this->addReference('advantage-' . $i, $advantage);
         }
 
         $manager->flush();
