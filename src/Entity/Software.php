@@ -6,6 +6,7 @@ use App\Repository\SoftwareRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: SoftwareRepository::class)]
 class Software
@@ -58,12 +59,12 @@ class Software
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(string $slug): static
+  public function makeSlug(): static
     {
-        $this->slug = $slug;
+        $this->slug = $this->toSlug();
 
         return $this;
     }
@@ -94,8 +95,10 @@ class Software
 
         return $this;
     }
-    public function __toString(): string
+
+    public function toSlug(): string
     {
-        return $this->title; // ou tout autre champ pertinent
+        $slugger = new AsciiSlugger();
+        return strtolower($slugger->slug($this->title . '-' . $this->id));
     }
 }

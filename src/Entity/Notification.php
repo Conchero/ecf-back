@@ -6,6 +6,7 @@ use App\Repository\NotificationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\User;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
@@ -35,8 +36,6 @@ class Notification
 
     public function getId(): ?int
     {
-         $fifi= "fifi";
-
         return $this->id;
     }
 
@@ -73,12 +72,12 @@ class Notification
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(?string $slug): static
+    public function makeSlug(): static
     {
-        $this->slug = $slug;
+        $this->slug = $this->toSlug();
 
         return $this;
     }
@@ -105,5 +104,17 @@ class Notification
         $this->receiver = $receiver;
 
         return $this;
+    }
+
+
+    protected function toSlug(): string
+    {                   //pour générer  les 3 premières lettres du prénom du client
+        $slugger = new AsciiSlugger();
+
+        $prefixClient = substr(strtolower($this->getReservation()?->getClient()->getLastName() ?? 'res'), 0, 3);
+        $prefixRes = trim(substr(strtolower($this->getReservation()?->getRentedRoom()->getTitle() ?? 'res'), 0, 3));
+
+
+        return strtolower($slugger->slug($prefixRes . "-" . $prefixClient . '-' . ($this->id ?? $this->getReservation()->getClient()->getId() ?? "1")));
     }
 }

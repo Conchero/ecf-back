@@ -7,8 +7,8 @@ use App\Entity\Room;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use App\DataFixtures\Collection;
 
+use App\DataFixtures\UserFixtures;
 
 
 class RoomFixtures extends Fixture implements DependentFixtureInterface
@@ -17,15 +17,16 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $rooms = [];
 
         for ($i = 0; $i < 20; $i++) {
+            $room = new Room();
+
             /** @var \App\Entity\User $owner */
             $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
-
-
             $room = new Room();
             $room->setTitle($faker->company . ' Salle')
-                ->setSlug('salle-' . $i)
+                ->makeSlug()
                 ->setImage('default.jpg')
                 ->setLocalisation($faker->address())
                 ->setKeywords(implode(', ', $faker->words(5)))
@@ -54,9 +55,17 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
 
             $manager->persist($room);
             $this->addReference('room-' . $i, $room);
+            $manager->persist($room);
+            $rooms[] = $room;
         }
 
+        // flush pour générer les ID dans toutes les entités
+        $manager->flush();
 
+        foreach ($rooms as $index => $room) {
+            // Slug titre + index
+            $this->addReference('room-' . $index, $room);
+        }
 
         $manager->flush();
     }

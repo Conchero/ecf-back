@@ -7,12 +7,15 @@ use App\Entity\Reservation;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use App\DataFixtures\UserFixtures;
+use App\DataFixtures\RoomFixtures;
 
 class ReservationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+        $reservations = [];
 
         for ($i = 0; $i < 30; $i++) {
             $reservation = new Reservation();
@@ -23,23 +26,25 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
             /** @var \App\Entity\User $client */
             $client = $this->getReference('user-' . $faker->numberBetween(0, 69), \App\Entity\User::class);
 
-
             /** @var \App\Entity\Room $room */
             $room = $this->getReference('room-' . $faker->numberBetween(0, 19), \App\Entity\Room::class);
 
-
             $reservation
-                ->setSlug('reservation-' . $i)
                 ->setClient($client)
                 ->setRentedRoom($room)
                 ->setReservationStart($start)
                 ->setReservationEnd($end)
-                ->setStatus($faker->randomElement(['pending', 'accepted', 'rejected']));
+                ->setStatus($faker->randomElement(['pending', 'accepted', 'rejected']))->makeSlug();
 
 
             $manager->persist($reservation);
+            $reservations[] = $reservation;
+        }
 
-            $this->addReference('reservation-' . $i, $reservation);
+        $manager->flush();
+
+        foreach ($reservations as $index => $reservation) {
+            $this->addReference('reservation-' . $index, $reservation);
         }
 
         $manager->flush();

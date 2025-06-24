@@ -17,7 +17,7 @@ class SoftwareFixtures extends Fixture
             $software = new Software();
             $software
                 ->setTitle($faker->word())
-                ->setSlug('software-' . $i); 
+                ->makeSlug(); 
 
             $manager->persist($software);
             $this->addReference('software-' . $i, $software);

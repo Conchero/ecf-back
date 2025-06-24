@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -46,12 +47,13 @@ class Reservation
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(string $slug): static
+  public function makeSlug(): static
     {
-        $this->slug = $slug;
+        $this->slug = $this->toSlug();
+
         return $this;
     }
 
@@ -123,5 +125,11 @@ class Reservation
     public function isRejected(): bool
     {
         return $this->status === 'rejected';
+    }
+
+    public function toSlug(): string
+    {                   //pour générer  les 3 premières lettres du prénom du client
+        $prefix = substr(strtolower($this->getClient()?->getFirstName() ?? 'res'), 0, 3);
+        return $prefix . '-reservation-' . $this->getId();
     }
 }
