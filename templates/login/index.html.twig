@@ -9,7 +9,7 @@
         <div style="color: red;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    <form method="post" action="{{ path('app_login') }}">
+    <form action="{{ path('app_login') }}" method="post" >
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
         <div>

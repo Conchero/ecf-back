@@ -118,6 +118,16 @@ class Room
         return $this->image;
     }
 
+     public function getImagePath(): ?string
+    {
+        $path = '/uploads/images/';
+        if ($this->image !== 'default.png') {
+            return $path . $this->image;
+        }
+        return $path = '/images/' . 'default.png';
+    }
+
+
     public function setImage(string $image): static
     {
         $this->image = $image;

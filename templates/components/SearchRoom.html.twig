@@ -1,0 +1,25 @@
+<div{{ attributes }} class="">
+    
+    <label class="input mt-10 border">
+        <twig:ux:icon name="lucide:search" class="w-5 h-5"/>
+        <input type="text" data-model="query" class="grow" placeholder="Tapez un mot-clé..." />
+    </label>
+
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% set rooms = this.rooms %}
+        {% if rooms|length > 0 %}
+            {% for item in rooms %}
+                <div class="card bg-base-50 shadow hover:shadow-xl transition duration-300 ease-in-out col-span-1 h-64">
+                    <a href="{{ path('room_view', {'slug': item.slug}) }}" class="card-body grid grid-rows-3 justify-center items-center">
+                        {# Ligne supprimée car propriété 'createdAt' inexistante #}
+                        <h2 class="card-title row-span-2 text-2xl">{{ item.title|slice(0, 120) }}</h2>
+                        <p class="row-span-1 text-sm text-center">Localisation : {{ item.localisation }}</p>
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucune salle ne correspond</p>
+        {% endif %}
+    </div>
+
+</div>

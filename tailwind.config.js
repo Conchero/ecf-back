@@ -8,4 +8,7 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  colors: {
+          beige: '#C6B8A7', // code hexadécimal du beige
+      },
 }
