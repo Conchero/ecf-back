@@ -31,8 +31,8 @@ class Reservation
     #[ORM\Column]
     private ?\DateTime $reservationEnd = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?bool $is_pending = null;
+    #[ORM\Column(length: 20)]
+    private ?string $status = 'pending'; // Valeurs possibles : 'pending', 'accepted', 'rejected'
 
     public function getId(): ?int
     {
@@ -42,21 +42,27 @@ class Reservation
     public function setId(int $id): static
     {
         $this->id = $id;
-
         return $this;
     }
 
     public function getSlug(): ?string
     {
-        return $this->toSlug();
+        return $this->slug;
+    }
+    
+    
+    public function setSlug($slug): ?string
+    {
+        $this->slug = $slug;
+        return $this->slug;
     }
 
-    // public function setSlug(string $slug): static
-    // {
-    //     $this->slug = $slug;
-    //     return $this;
-    // }
-
+  public function makeSlug($_id): string
+    {
+        $prefix = substr(strtolower($this->getClient()?->getFirstName() ?? 'res'), 0, 3);
+        $this->slug = $prefix . '-reservation-' . $_id ;
+        return $this->slug;
+    }
 
     public function getRentedRoom(): ?Room
     {
@@ -66,7 +72,6 @@ class Reservation
     public function setRentedRoom(?Room $rentedRoom): static
     {
         $this->rentedRoom = $rentedRoom;
-
         return $this;
     }
 
@@ -78,7 +83,6 @@ class Reservation
     public function setClient(?User $client): static
     {
         $this->client = $client;
-
         return $this;
     }
 
@@ -90,7 +94,6 @@ class Reservation
     public function setReservationStart(\DateTime $reservationStart): static
     {
         $this->reservationStart = $reservationStart;
-
         return $this;
     }
 
@@ -102,24 +105,34 @@ class Reservation
     public function setReservationEnd(\DateTime $reservationEnd): static
     {
         $this->reservationEnd = $reservationEnd;
-
         return $this;
     }
 
-    public function isPending(): ?bool
+    public function getStatus(): ?string
     {
-        return $this->is_pending;
+        return $this->status;
     }
 
-    public function setIsPending(?bool $is_pending): static
+    public function setStatus(string $status): static
     {
-        $this->is_pending = $is_pending;
-
+        $this->status = $status;
         return $this;
     }
-    public function toSlug(): string
-    {                   //pour générer  les 3 premières lettres du prénom du client
-        $prefix = substr(strtolower($this->getClient()?->getFirstName() ?? 'res'), 0, 3);
-        return $prefix . '-reservation-' . $this->getId();
+
+    public function isPending(): bool
+    {
+        return $this->status === 'pending';
     }
+
+    public function isAccepted(): bool
+    {
+        return $this->status === 'accepted';
+    }
+
+    public function isRejected(): bool
+    {
+        return $this->status === 'rejected';
+    }
+
+
 }

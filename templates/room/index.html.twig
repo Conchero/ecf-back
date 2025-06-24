@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des salles{% endblock %}
+
+{% block body %}
+    <h1>Liste des salles</h1>
+
+    <div class="rooms-list">
+        {% if rooms is empty %}
+            <p>Aucune salle disponible.</p>
+        {% else %}
+            <ul>
+                {% for room in rooms %}
+                    <li>
+                        <strong>{{ room.title }}</strong> - 
+                        {{ room.localisation|split(',')|last|trim }}<br>
+                        <a href="{{ path('room_view', {'slug': room.slug}) }}">Voir la salle</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}

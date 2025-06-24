@@ -29,8 +29,9 @@ class SoftwareFixtures extends Fixture
 
         foreach ($softwareNames as $i => $name) {
             $software = new Software();
+         
             $software->setTitle($name)
-                     ->setSlug(strtolower($slugger->slug($name . '-' . $i)));
+                     ->makeSlug($i); 
 
             $manager->persist($software);
             $this->addReference('software-' . $i, $software);
@@ -39,3 +40,4 @@ class SoftwareFixtures extends Fixture
         $manager->flush();
     }
 }
+

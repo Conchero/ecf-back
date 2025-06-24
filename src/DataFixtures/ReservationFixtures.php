@@ -27,20 +27,20 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
             $client = $this->getReference('user-' . $faker->numberBetween(0, 69), \App\Entity\User::class);
 
             /** @var \App\Entity\Room $room */
-            $room = $this->getReference('room-' . $faker->numberBetween(0, 19), \App\Entity\Room::class);
+            $room = $this->getReference('room-' . $faker->numberBetween(0, 9), \App\Entity\Room::class);
 
             $reservation
                 ->setClient($client)
                 ->setRentedRoom($room)
                 ->setReservationStart($start)
                 ->setReservationEnd($end)
-                ->setIsPending($faker->boolean(30));
+                ->setStatus($faker->randomElement(['pending', 'accepted', 'rejected']))->makeSlug($i);
+
 
             $manager->persist($reservation);
             $reservations[] = $reservation;
         }
 
-        $manager->flush();
 
         foreach ($reservations as $index => $reservation) {
             $this->addReference('reservation-' . $index, $reservation);
@@ -57,3 +57,4 @@ class ReservationFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 }
+

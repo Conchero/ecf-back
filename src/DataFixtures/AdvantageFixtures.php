@@ -28,7 +28,8 @@ class AdvantageFixtures extends Fixture
 
         foreach ($advantageNames as $i => $name) {
             $advantage = new Advantage();
-            $advantage->setTitle($name);
+            
+            $advantage->setTitle($name)->makeSlug($i);
 
             $manager->persist($advantage);
             $advantages[] = $advantage;
@@ -47,3 +48,4 @@ class AdvantageFixtures extends Fixture
         $manager->flush();
     }
 }
+

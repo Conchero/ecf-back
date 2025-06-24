@@ -7,10 +7,15 @@
         "php": ">=8.1",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "cocur/slugify": "^4.6",
         "doctrine/dbal": "^3",
-        "doctrine/doctrine-bundle": "^2.15",
+        "doctrine/doctrine-bundle": "*",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.4",
+        "easycorp/easyadmin-bundle": "^4.24",
+        "fakerphp/faker": "^1.24",
+        "friendsofsymfony/ckeditor-bundle": "^2.6",
+        "knplabs/knp-time-bundle": "*",
         "symfony/console": "6.4.*",
         "symfony/dotenv": "6.4.*",
         "symfony/flex": "^2",
@@ -18,7 +23,14 @@
         "symfony/password-hasher": "6.4.*",
         "symfony/runtime": "6.4.*",
         "symfony/security-bundle": "6.4.*",
-        "symfony/yaml": "6.4.*"
+        "symfony/stimulus-bundle": "^2.26",
+        "symfony/ux-dropzone": "^2.26",
+        "symfony/ux-icons": "^2.26",
+        "symfony/ux-live-component": "*",
+        "symfony/ux-swup": "^2.26",
+        "symfony/ux-twig-component": "^2.26",
+        "symfony/yaml": "6.4.*",
+        "symfonycasts/tailwind-bundle": "^0.10.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.1",
@@ -59,7 +71,9 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "ckeditor:install": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

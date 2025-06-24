@@ -26,7 +26,7 @@ class EquipmentFixtures extends Fixture
 
         foreach ($equipmentNames as $i => $name) {
             $equipment = new Equipment();
-            $equipment->setTitle($name);
+            $equipment->setTitle($name)->makeSlug($i);
 
             $manager->persist($equipment);
             $this->addReference('equipment-' . $i, $equipment);
@@ -35,3 +35,4 @@ class EquipmentFixtures extends Fixture
         $manager->flush();
     }
 }
+

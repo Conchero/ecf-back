@@ -7,16 +7,30 @@ use App\Entity\Room;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use App\DataFixtures\Collection;
+
+
 use App\DataFixtures\UserFixtures;
 //manque la route pour images
 
+
 class RoomFixtures extends Fixture implements DependentFixtureInterface
 {
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
         $rooms = [];
 
+//         for ($i = 0; $i < 20; $i++) {
+
+//             $room = new Room();
+
+//             /** @var \App\Entity\User $owner */
+//             $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
+//             $room = new Room();
+//             $room->setTitle($faker->company . ' Salle')
+//                 ->setImage('default.jpg')
         // 10 noms de salle avec leurs images correspondantes
         $roomTemplates = [
             'Loft Industriel'     => 'loft_industriel.jpg',
@@ -46,6 +60,10 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
 
         $i = 0;
         foreach ($roomTemplates as $title => $image) {
+
+            /** @var \App\Entity\User $owner */
+
+            $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
             $room = new Room();
             $room
                 ->setTitle($title)
@@ -54,10 +72,8 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
                 ->setKeywords(implode(', ', $faker->words(5)))
                 ->setDescription($descriptions[$i])
                 ->setIsAvailable($faker->boolean(90))
-                ->setCapacity($faker->numberBetween(10, 200));
-
-            $owner = $this->getReference('user-' . $faker->numberBetween(0, 9), \App\Entity\User::class);
-            $room->setOwner($owner)
+                ->setCapacity($faker->numberBetween(10, 200))
+                ->setOwner($owner)
                 ->addAdvantage($this->getReference('advantage-' . $faker->numberBetween(0, 3), \App\Entity\Advantage::class))
                 ->addAdvantage($this->getReference('advantage-' . $faker->numberBetween(0, 3), \App\Entity\Advantage::class))
                 ->addAdvantage($this->getReference('advantage-' . $faker->numberBetween(0, 3), \App\Entity\Advantage::class))
@@ -66,10 +82,11 @@ class RoomFixtures extends Fixture implements DependentFixtureInterface
                 ->addEquipment($this->getReference('equipment-' . $faker->numberBetween(0, 3), \App\Entity\Equipment::class))
                 ->addSoftware($this->getReference('software-' . $faker->numberBetween(0, 3), \App\Entity\Software::class))
                 ->addSoftware($this->getReference('software-' . $faker->numberBetween(0, 3), \App\Entity\Software::class))
-                ->addSoftware($this->getReference('software-' . $faker->numberBetween(0, 3), \App\Entity\Software::class));
+                ->addSoftware($this->getReference('software-' . $faker->numberBetween(0, 3), \App\Entity\Software::class))->makeSlug($i);
 
             $manager->persist($room);
             $rooms[] = $room;
+
             $this->addReference('room-' . $i, $room);
             $i++;
         }
