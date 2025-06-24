@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Repository\RoomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -101,15 +102,16 @@ class Room
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(string $slug): static
+   public function makeSlug(): static
     {
-        $this->slug = $slug;
+        $this->slug = $this->toSlug();
 
         return $this;
     }
+
 
     public function getImage(): ?string
     {
@@ -295,5 +297,10 @@ class Room
         }
 
         return $this;
+    }
+    public function toSlug(): string
+    {
+        $slugger = new AsciiSlugger();
+        return strtolower($slugger->slug($this->title . '-' . $this->id));
     }
 }

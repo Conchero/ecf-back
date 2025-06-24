@@ -18,6 +18,9 @@ class NotificationFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
 
+        $admin = $this->getReference('user-admin', \App\Entity\User::class);
+
+
         for ($i = 0; $i < 30; $i++) {
             $notification = new Notification();
 
@@ -25,12 +28,12 @@ class NotificationFixtures extends Fixture implements DependentFixtureInterface
             $reservation = $this->getReference('reservation-' . $faker->numberBetween(0, 29), Reservation::class);
 
             /** @var User $receiver */
-            $receiver = $this->getReference('user-' . $faker->numberBetween(0, 69), User::class);
+            $receiver = $admin;
 
             $notification
                 ->setReservation($reservation)
                 ->setReceiver($receiver)
-                ->setMessage($faker->sentence());
+                ->setMessage($faker->sentence())->makeSlug();
 
             $manager->persist($notification);
         }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Repository\EquipmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -58,12 +59,12 @@ class Equipment
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(string $slug): self
+    public function makeSlug(): static
     {
-        $this->slug = $slug;
+        $this->slug = $this->toSlug();
 
         return $this;
     }
@@ -94,9 +95,11 @@ class Equipment
 
         return $this;
     }
-    public function __toString(): string
+
+    public function toSlug(): string
     {
-        return $this->title;
+        $slugger = new AsciiSlugger();
+        return strtolower($slugger->slug($this->title . '-' . $this->id));
     }
-    
+
 }
