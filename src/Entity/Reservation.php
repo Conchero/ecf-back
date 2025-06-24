@@ -48,15 +48,15 @@ class Reservation
 
     public function getSlug(): ?string
     {
-        return $this->slug;
+        return $this->toSlug();
     }
 
-    public function setSlug(string $slug): static
-    {
-        $this->slug = $slug;
+    // public function setSlug(string $slug): static
+    // {
+    //     $this->slug = $slug;
+    //     return $this;
+    // }
 
-        return $this;
-    }
 
     public function getRentedRoom(): ?Room
     {
