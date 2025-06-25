@@ -33,7 +33,6 @@ class EquipmentCrudController extends AbstractCrudController
         ];
     }
 
-    // Exemple d'une méthode personnalisée pour créer un équipement
     public function createEquipment(Equipment $equipment): void
     {
         // Persiste l'entité en attente d'être enregistrée

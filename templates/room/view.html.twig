@@ -1,75 +1,85 @@
+{# templates/room/view.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la salle - {{ room.title }}{% endblock %}
+
 {% block body %}
-  <!-- Image de fond avec titre -->
-  <header class="hero rounded-md min-h-72 my-10" style="background-image: url('{{ room.imagePath }}');">
-      <div class="hero-overlay rounded-md bg-opacity-40"></div>
-      <div class="hero-content text-slate-50 text-center rounded-md">
-          <div>
-              <h1 class="mb-5 text-5xl text-white font-bold">
-                  {{ room.title }}
-              </h1>
-          </div>
-      </div>
-  </header>
+  <header class="hero rounded-md min-h-72 my-10" style="background-image: url({{ room.imagePath }});">
+		<div class="hero-overlay rounded-md"></div>
+		<div class="hero-content text-slate-50 text-center rounded-md">
+			<div>
+				<h1 class="mb-5 text-5xl text-white">
+                    {{ room.title }}
+                </h1>
 
-  <!-- Contenu en dehors de l'image -->
-  <section class="max-w-4xl mx-auto px-4 text-gray-800">
-      <p><strong>Localisation :</strong> {{ room.localisation }}</p>
-      <p><strong>Capacité :</strong> {{ room.capacity }}</p>
-      <p><strong>Description :</strong></p>
-      <p>{{ room.description }}</p>
+    <p><strong>Localisation :</strong> {{ room.localisation }}</p>
+    <p><strong>Capacité :</strong> {{ room.capacity }}</p>
+    <p><strong>Description :</strong></p>
+    <p>{{ room.description }}</p>
 
-      <h2 class="mt-6 text-xl font-semibold">Équipements</h2>
-      <ul class="list-disc list-inside">
-          {% for equip in room.equipments %}
-              <li>{{ equip.title }}</li>
-          {% else %}
-              <li>Aucun équipement</li>
-          {% endfor %}
-      </ul>
+    <h2 class="mt-6 text-xl font-semibold">Équipements</h2>
+    <ul class="list-disc list-inside">
+        {% for equip in room.equipments %}
+            <li>{{ equip.title }}</li>
+        {% else %}
+            <li>Aucun équipement</li>
+        {% endfor %}
+    </ul>
 
-      <h2 class="mt-6 text-xl font-semibold">Avantages</h2>
-      <ul class="list-disc list-inside">
-          {% for adv in room.advantages %}
-              <li>{{ adv.title }}</li>
-          {% else %}
-              <li>Aucun avantage</li>
-          {% endfor %}
-      </ul>
+    <h2 class="mt-6 text-xl font-semibold">Avantages</h2>
+    <ul class="list-disc list-inside">
+        {% for adv in room.advantages %}
+            <li>{{ adv.title }}</li>
+        {% else %}
+            <li>Aucun avantage</li>
+        {% endfor %}
+    </ul>
 
-      <h2 class="mt-6 text-xl font-semibold">Logiciels</h2>
-      <ul class="list-disc list-inside">
-          {% for soft in room.softwares %}
-              <li>{{ soft.title }}</li>
-          {% else %}
-              <li>Aucun logiciel</li>
-          {% endfor %}
-      </ul>
+    <h2 class="mt-6 text-xl font-semibold">Logiciels</h2>
+    <ul class="list-disc list-inside">
+        {% for soft in room.softwares %}
+            <li>{{ soft.title }}</li>
+        {% else %}
+            <li>Aucun logiciel</li>
+        {% endfor %}
+    </ul>
 
-      <p class="mt-6">
-          <a href="{{ path('app_room') }}" class="text-blue-600 hover:underline">← Retour à la liste des salles</a>
-      </p>
+    <p class="mt-6">
+        <a href="{{ path('app_room') }}" class="text-blue-600 hover:underline">← Retour à la liste des salles</a>
+    </p>
 
-      {% if app.user and room.owner and app.user.id == room.owner.id %}
-          <p class="text-sm text-center text-slate-600 mt-10">
-              Cet encart est visible uniquement par vous, en tant que propriétaire de la salle.
-          </p>
+    {% if app.user and room.owner and app.user.id == room.owner.id %}
+        <p class="text-sm text-center text-slate-600 mt-10">
+            Cet encart est visible uniquement par vous, en tant que propriétaire de la salle.
+        </p>
+        <script>
+        consoe.log("Vous êtes le propriétaire de cette salle.");
+        </script>
+        <div class="border rounded-md p-4 mb-6 flex justify-center bg-slate-50">
+            <section class="flex items-center gap-4">
+                <a href="{{ path('room_edit', {'slug': room.slug}) }}" class="flex items-center gap-2 text-blue-700 hover:underline">
+                    <i data-lucide="file-pen" class="w-5 h-5"></i>
+                    Modifier la salle
+                </a>
 
-          <div class="border rounded-md p-4 mb-6 flex justify-center bg-slate-50">
-              <section class="flex items-center gap-4">
-                  <a href="{{ path('room_edit', {'slug': room.slug}) }}" class="flex items-center gap-2 text-blue-700 hover:underline">
-                      <i data-lucide="file-pen" class="w-5 h-5"></i>
-                      Modifier la salle
-                  </a>
+                <form action="{{ path('room_delete', {'slug': room.slug}) }}" method="post" onsubmit="return confirm('Confirmer la suppression ?');">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token('delete' ~ room.id) }}">
+                    <button type="submit" class="flex items-center gap-2 text-red-600 hover:underline">
+                        <i data-lucide="file-x" class="w-5 h-5"></i>
+                        Supprimer
+                    </button>
+                </form>
+            </section>
+        </div>
+    {% endif %}
+{% endblock %}
 
-                  <form action="{{ path('room_delete', {'slug': room.slug}) }}" method="post" onsubmit="return confirm('Confirmer la suppression ?');">
-                      <input type="hidden" name="csrf_token" value="{{ csrf_token('delete' ~ room.id) }}">
-                      <button type="submit" class="flex items-center gap-2 text-red-600 hover:underline">
-                          <i data-lucide="file-x" class="w-5 h-5"></i>
-                          Supprimer
-                      </button>
-                  </form>
-              </section>
-          </div>
-      {% endif %}
-  </section>
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/lucide@latest"></>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            lucide.createIcons();
+        });
+    </script>
 {% endblock %}

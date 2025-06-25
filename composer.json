@@ -30,7 +30,8 @@
         "symfony/ux-swup": "^2.26",
         "symfony/ux-twig-component": "^2.26",
         "symfony/yaml": "6.4.*",
-        "symfonycasts/tailwind-bundle": "^0.10.0"
+        "symfonycasts/tailwind-bundle": "^0.10.0",
+        "vich/uploader-bundle": "*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.1",
