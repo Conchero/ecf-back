@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Reservation;
 use App\Entity\Room;
-use App\Form\ReservationForm;
 use App\Form\RoomForm;
 use App\Model\SearchData;
 use Cocur\Slugify\Slugify;
+use App\Entity\Reservation;
 use App\Form\SearchTypeForm;
+use App\Form\ReservationForm;
 use App\Service\UploadService;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 final class RoomController extends AbstractController
 {
@@ -48,7 +48,7 @@ final class RoomController extends AbstractController
             $room->setOwner($this->getUser());
 
             $slugify = new Slugify();
-            $room->makeSlug($slugify->slugify($room->getTitle()));
+            $room->setSlug($slugify->slugify($room->getTitle()));
 
             if ($image = $form->get('image')->getData()) {
                 $room->setImage($uploadService->upload($image, 'image'));
@@ -69,48 +69,11 @@ final class RoomController extends AbstractController
         ]);
     }
 
-
-    /// Version AVEC FORM 
-    // #[Route('/room/{slug}', name: 'room_view', methods: ['GET', 'POST'])]
-    // public function view(string $slug, Request $request): Response
-    // {
-    //     $room = $this->em->getRepository(Room::class)->findOneBy(['slug' => $slug]);
-    //     $roomReservationArray = $this->em->getRepository(Reservation::class)->findBy(['rentedRoom' => $room]);
-        
-
-
-       
-    //     if (!$room) {
-    //         throw $this->createNotFoundException('Salle non trouvée.');
-    //     }
-
-
-
-    //     if (!$room->isAvailable()) {
-    //         if ($room->getOwner() !== $this->getUser()) {
-
-    //             $this->addFlash('danger', "La salle n'est pas accessible pour le moment.");
-    //             return $this->redirectToRoute('app_room');
-    //         }
-    //     }
-
-    //    $newReservation = new Reservation(); 
-    //     $form = $this->createForm(ReservationForm::class, $newReservation); // Mise en place du formulaire
-    //     $form->handleRequest($request);
-    //     $newReservation->setRentedRoom($room)->setClient($this->getUser());
-
-    //     return $this->render('room/view.html.twig', [
-    //         'room' => $room,
-    //         'reservations' => $roomReservationArray,
-    //         'reservationForm' => $form
-    //     ]);
-
-
   #[Route('/room/{slug}', name: 'room_view', methods: ['GET'])]
-public function view(string $slug, Request $request): Response
+public function view(string $slug, ReservationRepository $reservationRepository): Response
 {
     $room = $this->em->getRepository(Room::class)->findOneBy(['slug' => $slug]);
-$roomReservationArray = $this->em->getRepository(Reservation::class)->findBy(['rentedRoom' => $room]);
+
     if (!$room) {
         throw $this->createNotFoundException('Salle non trouvée.');
     }
@@ -124,16 +87,14 @@ $roomReservationArray = $this->em->getRepository(Reservation::class)->findBy(['r
         return $this->redirectToRoute('app_room');
     }
 
-
-       $newReservation = new Reservation(); 
-        $form = $this->createForm(ReservationForm::class, $newReservation); // Mise en place du formulaire
-        $form->handleRequest($request);
-        $newReservation->setRentedRoom($room)->setClient($this->getUser());
+    // Récupération des réservations associées à cette salle
+    $reservations = $reservationRepository->findBy([
+        'rentedRoom' => $room,
+    ]);
 
     return $this->render('room/view.html.twig', [
-                  'room' => $room,
-            'reservations' => $roomReservationArray,
-            'reservationForm' => $form
+        'room' => $room,
+        'reservations' => $reservations, 
     ]);
 }
 
@@ -176,8 +137,6 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
 
         return $this->redirectToRoute('room_view', ['slug' => $room->getSlug()]);
     }
-
-
 
     return $this->render('room/edit.html.twig', [
         'form' => $form->createView(),
@@ -232,8 +191,6 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
             'reservations' => $reservations,
         ]);
     }
-
-
     #[Route('/reservation/{id}/edit', name: 'reservation_edit', methods: ['GET', 'POST'])]
     public function reservationEdit(int $id, Request $request, ReservationRepository $reservationRepository): Response
     {
@@ -300,4 +257,75 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
         }
         return $this->redirectToRoute('my_reservations');
     }
+    #[Route('/room/{slug}/reserver', name: 'room_reserver', methods: ['GET', 'POST'])]
+    public function reserver(string $slug, Request $request, ReservationRepository $reservationRepository, RoomRepository $roomRepository): Response
+    {
+        $room = $roomRepository->findOneBySlug($slug);
+        if (!$room) {
+            throw $this->createNotFoundException('Salle non trouvée.');
+        }
+
+        // Récupérer les périodes déjà réservées (accepted ou pending)
+        $reservations = $reservationRepository->createQueryBuilder('r')
+            ->where('r.rentedRoom = :room')
+            ->andWhere('r.status IN (:statuses)')
+            ->setParameter('room', $room)
+            ->setParameter('statuses', ['pending', 'accepted'])
+            ->getQuery()->getResult();
+
+        $reservedPeriods = [];
+        foreach ($reservations as $res) {
+            $reservedPeriods[] = [
+                'start' => $res->getReservationStart()->format('Y-m-d H:i'),
+                'end' => $res->getReservationEnd()->format('Y-m-d H:i'),
+            ];
+        }
+
+        $reservation = new Reservation();
+        $reservation->setRentedRoom($room);
+        $form = $this->createFormBuilder($reservation)
+            ->add('reservationStart', DateTimeType::class, [
+                'label' => 'Début de la réservation',
+                'widget' => 'single_text',
+            ])
+            ->add('reservationEnd', DateTimeType::class, [
+                'label' => 'Fin de la réservation',
+                'widget' => 'single_text',
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $start = $reservation->getReservationStart();
+            $end = $reservation->getReservationEnd();
+            $overlap = false;
+            foreach ($reservations as $res) {
+                if (
+                    ($start < $res->getReservationEnd()) &&
+                    ($end > $res->getReservationStart())
+                ) {
+                    $overlap = true;
+                    break;
+                }
+            }
+            if ($overlap) {
+                $this->addFlash('danger', 'La période sélectionnée est déjà réservée.');
+            } else {
+                $reservation->setClient($this->getUser());
+                $reservation->setStatus('pending');
+                $reservation->setSlug(uniqid('reservation-'));
+                $this->em->persist($reservation);
+                $this->em->flush();
+                $this->addFlash('success', 'Votre demande de réservation a bien été enregistrée.');
+                return $this->redirectToRoute('my_reservations');
+            }
+        }
+
+        return $this->render('room/reserver.html.twig', [
+            'form' => $form->createView(),
+            'room' => $room,
+            'reservedPeriods' => $reservedPeriods,
+        ]);
+    }
+    
 }

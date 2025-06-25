@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réserver la salle {{ room.title }}{% endblock %}
+
+{% block body %}
+<div class="container mx-auto mt-8">
+    <h1 class="text-2xl font-bold mb-4">Réserver la salle {{ room.title }}</h1>
+
+    <div class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Périodes déjà réservées</h2>
+        {% if reservedPeriods|length == 0 %}
+            <p class="text-green-600">Aucune période réservée pour l'instant.</p>
+        {% else %}
+            <ul>
+                {% for period in reservedPeriods %}
+                    <li class="text-red-600">Du {{ period.start }} au {{ period.end }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    <div class="max-w-md">
+        {{ form_start(form) }}
+            {{ form_row(form.reservationStart) }}
+            {{ form_row(form.reservationEnd) }}
+            <button class="btn btn-primary mt-4" type="submit">Réserver</button>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %} 

@@ -12,40 +12,40 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\DataFixtures\UserFixtures;
 use App\DataFixtures\ReservationFixtures;
 
-class NotificationFixtures extends Fixture implements DependentFixtureInterface
+class NotificationFixtures extends Fixture 
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create('fr_FR');
+    //     $faker = Factory::create('fr_FR');
 
-        $admin = $this->getReference('user-admin', \App\Entity\User::class);
+    //     $admin = $this->getReference('user-admin', \App\Entity\User::class);
 
 
-        for ($i = 0; $i < 30; $i++) {
-            $notification = new Notification();
+    //     for ($i = 0; $i < 30; $i++) {
+    //         $notification = new Notification();
 
-            /** @var Reservation $reservation */
-            $reservation = $this->getReference('reservation-' . $faker->numberBetween(0, 29), Reservation::class);
+    //         /** @var Reservation $reservation */
+    //         $reservation = $this->getReference('reservation-' . $faker->numberBetween(0, 29), Reservation::class);
 
-            /** @var User $receiver */
-            $receiver = $admin;
+    //         /** @var User $receiver */
+    //         $receiver = $admin;
 
-            $notification
-                ->setReservation($reservation)
-                ->setReceiver($receiver)
-                ->setMessage($faker->sentence())->makeSlug($i);
+    //         $notification
+    //             ->setReservation($reservation)
+    //             ->setReceiver($receiver)
+    //             ->setMessage($faker->sentence())->makeSlug($i);
 
-            $manager->persist($notification);
-        }
+    //         $manager->persist($notification);
+    //     }
 
-        $manager->flush();
-    }
+    //     $manager->flush();
+    // }
 
-    public function getDependencies(): array
-    {
-        return [
-            ReservationFixtures::class,
-            UserFixtures::class,
-        ];
+    // public function getDependencies(): array
+    // {
+    //     return [
+    //         ReservationFixtures::class,
+    //         UserFixtures::class,
+    //     ];
     }
 }

@@ -1,13 +1,8 @@
-<<<<<<< HEAD
-{% extends 'base.html.twig' %}
 
-=======
-{# templates/room/view.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Détails de la salle - {{ room.title }}{% endblock %}
 
->>>>>>> adminDashboard
 {% block body %}
   <header class="hero rounded-md min-h-72 my-10" style="background-image: url({{ room.imagePath }});">
 		<div class="hero-overlay rounded-md"></div>
@@ -50,13 +45,15 @@
     </ul>
 
 
-    {% set vars = {'reservations': reservations} %}
-    {% include 'calendar/calendar.html.twig' with vars %}
-
-
     <p class="mt-6">
+     {% if app.user %}
+            <a href="{{ path('room_reserver', {'slug': room.slug}) }}" class="ml-4 btn btn-primary">Réserver cette salle</a>
+        {% endif %}
         <a href="{{ path('app_room') }}" class="text-blue-600 hover:underline">← Retour à la liste des salles</a>
+        
     </p>
+
+
 
     {% if app.user and room.owner and app.user.id == room.owner.id %}
         <p class="text-sm text-center text-slate-600 mt-10">

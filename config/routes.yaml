@@ -3,3 +3,6 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+room_reserver:
+    path: /room/{slug}/reserver
+    controller: App\Controller\RoomController::reserver
