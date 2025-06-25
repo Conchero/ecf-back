@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes réservations{% endblock %}
+
+{% block body %}
+<h1 class="text-2xl font-bold text-center my-6">Mes réservations</h1>
+<div class="max-w-3xl mx-auto">
+    {% if reservations is empty %}
+        <p class="text-center text-gray-600">Vous n'avez aucune réservation.</p>
+    {% else %}
+        <table class="min-w-full bg-white shadow rounded-lg">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4">Salle</th>
+                    <th class="py-2 px-4">Début</th>
+                    <th class="py-2 px-4">Fin</th>
+                    <th class="py-2 px-4">Statut</th>
+                    <th class="py-2 px-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                    <tr class="border-b">
+                        <td class="py-2 px-4">{{ reservation.rentedRoom.title }}</td>
+                        <td class="py-2 px-4">{{ reservation.reservationStart|date('d/m/Y H:i') }}</td>
+                        <td class="py-2 px-4">{{ reservation.reservationEnd|date('d/m/Y H:i') }}</td>
+                        <td class="py-2 px-4">
+                            {% if reservation.status == 'pending' %}
+                                <span class="text-yellow-600 font-semibold">En attente</span>
+                            {% elseif reservation.status == 'accepted' %}
+                                <span class="text-green-600 font-semibold">Acceptée</span>
+                            {% elseif reservation.status == 'rejected' %}
+                                <span class="text-red-600 font-semibold">Refusée</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-2 px-4">
+                            {% set now = "now"|date('U') %}
+                            {% set start = reservation.reservationStart|date('U') %}
+                            {% set diff_days = ((start - now) / 86400)|round(0, 'floor') %}
+                            {% if reservation.status == 'pending' %}
+                                <a href="{{ path('reservation_edit', {'id': reservation.id}) }}" class="text-blue-600 hover:underline mr-2">Modifier</a>
+                                <form action="{{ path('reservation_delete', {'id': reservation.id}) }}" method="post" style="display:inline" onsubmit="return confirm('Confirmer la suppression ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                                    <button type="submit" class="text-red-600 hover:underline">Supprimer</button>
+                                </form>
+                            {% elseif reservation.status == 'accepted' %}
+                                {% if start > now %}
+                                    <a href="{{ path('reservation_edit', {'id': reservation.id}) }}" class="text-blue-600 hover:underline mr-2">Modifier</a>
+                                    {% if diff_days > 3 %}
+                                        <form action="{{ path('reservation_delete', {'id': reservation.id}) }}" method="post" style="display:inline" onsubmit="return confirm('Confirmer la suppression ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                                            <button type="submit" class="text-red-600 hover:underline">Supprimer</button>
+                                        </form>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %} 
