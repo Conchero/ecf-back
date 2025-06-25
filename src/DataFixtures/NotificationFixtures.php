@@ -12,11 +12,11 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use App\DataFixtures\UserFixtures;
 use App\DataFixtures\ReservationFixtures;
 
-class NotificationFixtures extends Fixture 
+class NotificationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-         $faker = Factory::create('fr_FR');
+        $faker = Factory::create('fr_FR');
 
         $admin = $this->getReference('user-admin', \App\Entity\User::class);
 
@@ -24,9 +24,8 @@ class NotificationFixtures extends Fixture
         for ($i = 0; $i < 30; $i++) {
             $notification = new Notification();
 
-
-        //     /** @var Reservation $reservation */
-             $reservation = $this->getReference('reservation-' . $faker->numberBetween(0, 10), Reservation::class);
+            /** @var Reservation $reservation */
+            $reservation = $this->getReference('reservation-' . $faker->numberBetween(0, 29), Reservation::class);
 
             /** @var User $receiver */
             $receiver = $admin;
