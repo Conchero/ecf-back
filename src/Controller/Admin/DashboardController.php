@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -47,7 +48,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::linkToRoute('Retour au site', 'fas fa-home', 'app_home');
 
-        $urgentCount = $this->notificationService->countNotifications();
+        $urgentCount = $this->notificationService->countNotifications()-1;
 
         yield MenuItem::linkToCrud('Notifications', 'fas fa-bell', Notification::class)
             ->setController(NotificationCrudController::class)
@@ -81,4 +82,5 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Créer', 'fas fa-plus', User::class)->setAction(Crud::PAGE_NEW),
         ]);
     }
+    
 }
