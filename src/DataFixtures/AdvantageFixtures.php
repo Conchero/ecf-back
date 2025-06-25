@@ -10,7 +10,6 @@ class AdvantageFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Liste de 10 avantages pour une salle de fête
         $advantageNames = [
             'Accès Wi-Fi haut débit',
             'Parking privé gratuit',
@@ -26,26 +25,23 @@ class AdvantageFixtures extends Fixture
 
         $advantages = [];
 
+        // Étape 1 : on crée les entités sans slug
         foreach ($advantageNames as $i => $name) {
             $advantage = new Advantage();
-            
-            $advantage->setTitle($name)->makeSlug($i);
-
+            $advantage->setTitle($name);
             $manager->persist($advantage);
             $advantages[] = $advantage;
         }
-
+        // on flush pour générer les IDs
         $manager->flush();
 
-        // Génération des slugs maintenant que les IDs existent
+        // Étape 3 : maintenant qu'on a les ID, on peut générer les slugs
         foreach ($advantages as $i => $advantage) {
-            $advantage->setSlug($advantage->toSlug());
+            $advantage->makeSlug();
             $manager->persist($advantage);
             $this->addReference('advantage-' . $i, $advantage);
         }
-
-        // Deuxième flush pour enregistrer les slugs grosse galère
+        //et ca re flush pour enregistrer les slugs
         $manager->flush();
     }
 }
-

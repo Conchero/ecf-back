@@ -19,8 +19,9 @@ class Advantage
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
+
 
     /**
      * @var Collection<int, Room>
@@ -57,7 +58,7 @@ class Advantage
         return $this;
     }
 
- public function getSlug(): ?string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -68,13 +69,12 @@ class Advantage
         return $this->slug;
     }
 
-    public function makeSlug($_id): string
+    public function makeSlug(): void
     {
-        $slugger = new AsciiSlugger();
-         $this->slug = strtolower($slugger->slug($this->title . '-' . $_id));
-
-         return $this->slug;
+        $slugger = new \Symfony\Component\String\Slugger\AsciiSlugger();
+        $this->slug = strtolower($slugger->slug($this->title . '-' . $this->id));
     }
+
 
 
     /**
@@ -103,5 +103,4 @@ class Advantage
 
         return $this;
     }
- 
 }
