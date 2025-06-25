@@ -21,7 +21,7 @@ class NotificationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('n')
             ->join('n.reservation', 'r')
             ->andWhere('r.date BETWEEN :now AND :limit')
-            ->andWhere('n.is_read = false') // ou ajouter un champ spécifique selon ta logique
+            ->andWhere('n.is_read = false') 
             ->setParameter('now', $now)
             ->setParameter('limit', $limit)
             ->select('COUNT(n.id)')

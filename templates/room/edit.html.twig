@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ room.title }}{% endblock %}
+
+{% block body %}
+    <h1 class="text-2xl font-bold mb-6">Modification de {{ room.title }}</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.image) }}
+        {{ form_row(form.localisation) }}
+        {{ form_row(form.capacity) }}
+        {{ form_row(form.keywords) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.equipments) }}
+        {{ form_row(form.advantages) }}
+        {{ form_row(form.softwares) }}
+
+        <button type="submit" class="btn btn-primary mt-4">Enregistrer</button>
+    {{ form_end(form) }}
+
+    <p class="mt-4">
+        <a href="{{ path('app_room') }}" class="text-blue-600 hover:underline">← Retour à la liste</a>
+    </p>
+{% endblock %}

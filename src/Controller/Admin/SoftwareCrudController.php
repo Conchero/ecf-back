@@ -33,7 +33,7 @@ class SoftwareCrudController extends AbstractCrudController
             TextField::new('slug'),
         ];
     }
-     // Exemple d'une méthode personnalisée pour créer un équipement
+  
     public function createSoftware(Software $software): void
     {
         // Persiste l'entité en attente d'être enregistrée

@@ -3,11 +3,79 @@
 {% block title %}Recherche de salles{% endblock %}
 
 {% block body %}
-<div class="min-h-screen">
-    <div class="text-center">
-        <div class="my-8">
-            <h1 class="text-4xl font-bold">Recherchez une salle</h1>
+<div class="min-h-screen p-8">
+    <div class="max-w-7xl mx-auto">
+        {# Barre de recherche live #}
+        <div class="mb-8">
             {{ component('SearchRoom') }}
+        </div>
+
+        {# Filtres avancés #}
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-center mb-4">Filtres avancés</h2>
+            
+            <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
+                <p class="text-gray-600 mb-4">Utilisez les filtres pour affiner votre recherche.</p>
+                {{ form_start(form, {'method': 'get', 'attr': {'class': 'space-y-4'}}) }}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            {{ form_row(form.equipments, {'label_attr': {'class': 'text-lg font-semibold mb-2'}, 'attr': {'class': 'space-y-2'}}) }}
+                        </div>
+                        <div>
+                            {{ form_row(form.advantages, {'label_attr': {'class': 'text-lg font-semibold mb-2'}, 'attr': {'class': 'space-y-2'}}) }}
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div>
+                            {{ form_row(form.softwares, {'label_attr': {'class': 'text-lg font-semibold mb-2'}, 'attr': {'class': 'space-y-2'}}) }}
+                        </div>
+                        <div>
+                            {{ form_row(form.capacity, {'label_attr': {'class': 'text-lg font-semibold mb-2'}, 'attr': {'class': 'w-full p-2 border rounded'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors" type="submit">
+                            Filtrer
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        {# Affichage des résultats #}
+        <div class="mt-8">
+            {% if rooms is empty %}
+                <p class="text-center text-gray-600">Aucune salle ne correspond à vos critères.</p>
+            {% else %}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for room in rooms %}
+                        <div class="bg-white rounded-lg shadow overflow-hidden">
+                            <div class="h-48 bg-cover bg-center" style="background-image: url('{{ room.imagePath }}')"></div>
+                            <div class="p-4">
+                                <h3 class="text-xl font-semibold">{{ room.title }}</h3>
+                                <p class="text-gray-600">{{ room.localisation }}</p>
+                                <p class="text-gray-600">Capacité: {{ room.capacity }} personnes</p>
+                                
+                                {% if room.equipments is not empty %}
+                                    <div class="mt-2">
+                                        <p class="font-semibold">Équipements:</p>
+                                        <p class="text-sm text-gray-600">
+                                            {{ room.equipments|map(e => e.title)|join(', ') }}
+                                        </p>
+                                    </div>
+                                {% endif %}
+                                
+                                <a href="{{ path('room_view', {'slug': room.slug}) }}" 
+                                   class="mt-4 inline-block text-blue-600 hover:underline">
+                                    Voir les détails
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

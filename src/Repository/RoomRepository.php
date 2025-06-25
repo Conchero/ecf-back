@@ -1,10 +1,12 @@
 <?php
 
+
 namespace App\Repository;
 
 use App\Entity\Room;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Model\SearchData;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Room>
@@ -15,7 +17,8 @@ class RoomRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Room::class);
     }
-     public function searchByTitle(string $query): array
+
+    public function searchByTitle(string $query): array
     {
         return $this->createQueryBuilder('r')
             ->andWhere('r.title LIKE :query')
@@ -24,6 +27,42 @@ class RoomRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Recherche filtrée selon SearchData
+     */
+    public function findByFilters(SearchData $searchData): array
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        if (!empty($searchData->equipments)) {
+            $qb->join('r.equipments', 'e')
+               ->andWhere('e IN (:equipments)')
+               ->setParameter('equipments', $searchData->equipments);
+        }
+
+        if ($searchData->capacity !== null) {
+            $qb->andWhere('r.capacity >= :capacity')
+               ->setParameter('capacity', $searchData->capacity);
+        }
+
+        if (!empty($searchData->softwares)) {
+            $qb->join('r.softwares', 's')
+               ->andWhere('s IN (:softwares)')
+               ->setParameter('softwares', $searchData->softwares);
+        }
+
+        if (!empty($searchData->advantages)) {
+            $qb->join('r.advantages', 'a')
+               ->andWhere('a IN (:advantages)')
+               ->setParameter('advantages', $searchData->advantages);
+        }
+
+        $qb->groupBy('r.id'); 
+
+        return $qb->getQuery()->getResult();
+    }
+
 
 //    /**
 //     * @return Room[] Returns an array of Room objects

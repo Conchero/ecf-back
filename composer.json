@@ -31,7 +31,8 @@
         "symfony/ux-turbo": "*",
         "symfony/ux-twig-component": "^2.26",
         "symfony/yaml": "6.4.*",
-        "symfonycasts/tailwind-bundle": "*"
+        "symfonycasts/tailwind-bundle": "*",
+        "vich/uploader-bundle": "*"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.1",
