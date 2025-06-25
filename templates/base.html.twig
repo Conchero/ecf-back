@@ -9,11 +9,13 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Questrial&display=swap" rel="stylesheet">
         {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
             <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
             <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
         {% endblock %}
 
          {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
             <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         {% endblock %}
@@ -24,6 +26,7 @@
         <main  class="container mx-auto px-4">
 
         {% block body %}{% endblock %}
+       
         </main>
          <twig:footer />
     </body>

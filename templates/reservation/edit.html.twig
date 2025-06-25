@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la réservation{% endblock %}
+
+{% block body %}
+<h1 class="text-center text-2xl my-4">Modifier la réservation</h1>
+<div class="grid place-items-center">
+    <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-xl">
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="mt-4 text-center">
+                <button type="submit" class="btn btn-primary px-6 py-2 rounded">
+                    Enregistrer
+                </button>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+<p class="my-4 flex items-center justify-center gap-2">
+    <a href="{{ path('my_reservations') }}" class="text-blue-600 hover:underline">Retour à mes réservations</a>
+</p>
+{% endblock %} 

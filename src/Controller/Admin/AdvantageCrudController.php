@@ -33,7 +33,7 @@ class AdvantageCrudController extends AbstractCrudController
         ];
     }
 
-    // Exemple d'une méthode personnalisée pour créer un avantage
+  
     public function createAdvantage(Advantage $advantage): void
     {
         // Persiste l'entité en attente d'être enregistrée

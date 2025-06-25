@@ -20,14 +20,18 @@
                 {{ ux_icon('lucide:user-circle', { class: 'h-6 w-6' }) }}
             </label>
             <ul tabindex="0" class="menu dropdown-content bg-beige rounded-box shadow mt-3 w-52 p-2 z-10">
-                {% if app.user %}
-                    <li><a href="{{ path('room_new') }}">Rédiger une annonce</a></li>
-                    <li><a href="{{ path('admin') }}">Mon dashboard</a></li>
-                    <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                 {% if app.user %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('admin') }}">Mon dashboard</a></li>
+                        <li><a href="{{ path('room_new') }}">Rédiger une annonce</a></li>
+                        <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    {% else %}
+                        <li><a href="{{ path('my_reservations') }}">Mes réservations</a></li>
+                        <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    {% endif %}
                 {% else %}
-                    <li><a href="{{ path('app_login') }}">Connexion</a></li>
-                    <li><a href="#">Mes réservations</a></li>
-                    <li><a href="{{ path('app_signin') }}">Inscription</a></li>
+                    <li><a href="{{ path('app_login') }}">Se connecter</a></li>
+                    <li><a href="{{ path('app_signin') }}">S'inscrire</a></li>
                 {% endif %}
             </ul>
         </div>

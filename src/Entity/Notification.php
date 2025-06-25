@@ -17,7 +17,7 @@ class Notification
     private ?int $id = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?Reservation $reservation = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

@@ -252,5 +252,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    
+public function __toString(): string
+{
+    // retourner le prénom + nom ou l'email
+    return $this->getLastName() ?? $this->getEmail() ?? 'Utilisateur';
+}
 
 }

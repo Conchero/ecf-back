@@ -17,9 +17,10 @@ class Reservation
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Room $rentedRoom = null;
+    #[ORM\ManyToOne(targetEntity: Room::class, inversedBy: 'reservations')]
+#[ORM\JoinColumn( onDelete: 'SET NULL')] // ou 'CASCADE' si tu veux tout supprimer
+private ?Room $rentedRoom = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
