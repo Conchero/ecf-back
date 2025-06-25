@@ -107,10 +107,10 @@ final class RoomController extends AbstractController
 
 
   #[Route('/room/{slug}', name: 'room_view', methods: ['GET'])]
-public function view(string $slug): Response
+public function view(string $slug, Request $request): Response
 {
     $room = $this->em->getRepository(Room::class)->findOneBy(['slug' => $slug]);
-
+$roomReservationArray = $this->em->getRepository(Reservation::class)->findBy(['rentedRoom' => $room]);
     if (!$room) {
         throw $this->createNotFoundException('Salle non trouvée.');
     }
@@ -124,8 +124,16 @@ public function view(string $slug): Response
         return $this->redirectToRoute('app_room');
     }
 
+
+       $newReservation = new Reservation(); 
+        $form = $this->createForm(ReservationForm::class, $newReservation); // Mise en place du formulaire
+        $form->handleRequest($request);
+        $newReservation->setRentedRoom($room)->setClient($this->getUser());
+
     return $this->render('room/view.html.twig', [
-        'room' => $room
+                  'room' => $room,
+            'reservations' => $roomReservationArray,
+            'reservationForm' => $form
     ]);
 }
 
@@ -225,7 +233,7 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
         ]);
     }
 
-    
+
     #[Route('/reservation/{id}/edit', name: 'reservation_edit', methods: ['GET', 'POST'])]
     public function reservationEdit(int $id, Request $request, ReservationRepository $reservationRepository): Response
     {
