@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Reservation;
 use App\Entity\Room;
+use App\Form\ReservationForm;
 use App\Form\RoomForm;
 use App\Service\UploadService;
 use Cocur\Slugify\Slugify;
@@ -11,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 
 final class RoomController extends AbstractController
 {
@@ -60,24 +63,38 @@ final class RoomController extends AbstractController
         ]);
     }
 
-    #[Route('/room/{slug}', name: 'room_view', methods: ['GET'])]
-    public function view(string $slug): Response
+    #[Route('/room/{slug}', name: 'room_view', methods: ['GET', 'POST'])]
+    public function view(string $slug, Request $request): Response
     {
         $room = $this->em->getRepository(Room::class)->findOneBy(['slug' => $slug]);
+        $roomReservationArray = $this->em->getRepository(Reservation::class)->findBy(['rentedRoom' => $room]);
+        
 
+
+       
         if (!$room) {
             throw $this->createNotFoundException('Salle non trouvée.');
         }
 
+
+
         if (!$room->isAvailable()) {
             if ($room->getOwner() !== $this->getUser()) {
+
                 $this->addFlash('danger', "La salle n'est pas accessible pour le moment.");
                 return $this->redirectToRoute('app_room');
             }
         }
 
+       $newReservation = new Reservation(); 
+        $form = $this->createForm(ReservationForm::class, $newReservation); // Mise en place du formulaire
+        $form->handleRequest($request);
+        $newReservation->setRentedRoom($room)->setClient($this->getUser());
+
         return $this->render('room/view.html.twig', [
-            'room' => $room
+            'room' => $room,
+            'reservations' => $roomReservationArray,
+            'reservationForm' => $form
         ]);
     }
 
@@ -126,6 +143,10 @@ final class RoomController extends AbstractController
             'room' => $room
         ]);
     }
+
+
+
+
 
     #[Route('/room/{slug}/delete', name: 'room_delete', methods: ['POST'])]
     public function delete(string $slug): Response

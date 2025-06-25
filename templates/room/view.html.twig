@@ -1,3 +1,5 @@
+{% extends 'base.html.twig' %}
+
 {% block body %}
   <!-- Image de fond avec titre -->
   <header class="hero rounded-md min-h-72 my-10" style="background-image: url('{{ room.imagePath }}');">
@@ -44,8 +46,10 @@
               <li>Aucun logiciel</li>
           {% endfor %}
       </ul>
-    
 
+
+    {% set vars = {'reservations': reservations} %}
+    {% include 'calendar/calendar.html.twig' with vars %}
 
       <p class="mt-6">
           <a href="{{ path('app_room') }}" class="text-blue-600 hover:underline">← Retour à la liste des salles</a>

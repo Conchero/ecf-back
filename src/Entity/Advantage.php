@@ -59,7 +59,7 @@ class Advantage
 
     public function getSlug(): ?string
     {
-        return $this->toSlug();
+        return $this->slug;
     }
 
     public function setSlug($slug): ?string

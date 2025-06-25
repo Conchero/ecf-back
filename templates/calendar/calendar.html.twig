@@ -1,15 +1,33 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Choisir une plage de dates</title>
+{% block body %}
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
-</head>
-<body>
-    <h2>Choisissez une plage de dates</h2>
+	{% block javascripts %}
 
-</body>
-</html>
+		{% block importmap %}
+			{{ importmap('calendar') }}
+		{% endblock %}
+
+	{% endblock %}
+
+	<div>
+		<h2>Choisissez une plage de dates</h2>
+		<input type="date" class="reservation start"></input>
+	<input type="date" class="reservation end"></input>
+<button>Confirmer</button>
+
+
+{% for item in reservations %}
+	<div class="error-message">
+		<h3>Vous ne pouvez pas réservez cette date du :<h3>
+				<div class="reservation-date flex gap-2" data-reservation-start={{item.getReservationStart().format("Y-m-d")}} data-reservation-end={{item.getReservationEnd().format("Y-m-d")}} > 
+					<h3 class="reservation-start"  >{{item.getReservationStart().format('d/m/Y')}}<h3>
+					<h3>au<h3>
+					<h3 class = "reservation-end" >{{item.getReservationEnd().format('d/m/Y')}}<h3>
+				</div>
+	</div>
+{% endfor %}
+
+						{% endblock %}
+					</section>
+
+				</body>
+			</html>

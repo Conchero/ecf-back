@@ -1,13 +1,15 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
+
+
 
 body {
     font-family: 'Questrial', sans-serif;
     @apply text-lg text-slate-700 bg-slate-100;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {    
     font-family: 'Funnel Display', serif;
     @apply font-bold;
 }
@@ -22,7 +24,17 @@ input[type="text"], input[type="email"], input[type="password"], input[type="num
 
 button[type="submit"] {
     .btn-custom {
-  @apply bg-beige text-white rounded-full px-3 py-2 transition duration-300 ease-in-out hover:opacity-90;
+  @apply bg-red-600 text-white rounded-full px-3 py-2 transition duration-300 ease-in-out hover:opacity-90;
 }
 
+}
+
+
+.error-message{
+    @apply bg-transparent ;    
+}
+
+
+.error-message-visible{
+    @apply bg-red-600 ;    
 }
