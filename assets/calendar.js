@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     inputs.forEach(el => {
         el.addEventListener("change", (e) => {
-            compareToExistingReservation(e.target.value);
+           // compareToExistingReservation(e.target.value);
         })
     })
 
