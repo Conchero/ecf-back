@@ -75,14 +75,14 @@ class CheckUrgentReservationsCommand extends Command
         $notificationsCreated = 0;
 
         foreach ($reservations as $reservation) {
-            // 3. Vérifier si une notification pour cette réservation et cet admin existe déjà
+            //  Vérifier si une notification pour cette réservation et cet admin existe déjà
             $existingNotification = $this->notificationRepository->findOneBy([
                 'reservation' => $reservation,
                 'receiver' => $admin
             ]);
 
             if (!$existingNotification) {
-                // 4. Créer la notification
+                //  Créer la notification
                 $notification = new Notification();
                 $notification->setReservation($reservation);
                 $notification->setReceiver($admin);
