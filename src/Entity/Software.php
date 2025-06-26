@@ -102,4 +102,9 @@ class Software
 
         return $this;
     }
+     public function toSlug(): string
+    {
+        $slugger = new AsciiSlugger();
+        return strtolower($slugger->slug($this->title . '-' . $this->id));
+    }
 }
