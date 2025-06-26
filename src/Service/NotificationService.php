@@ -1,7 +1,11 @@
 <?php
 namespace App\Service;
 
+use App\Entity\Notification;
 use App\Repository\ReservationRepository;
+use App\Entity\Reservation;
+use App\Entity\User;
+use DateTime;
 
 class NotificationService
 {
@@ -40,6 +44,30 @@ class NotificationService
 
         return $notifications;
     }
+
+
+    public function CheckReservation5DayLimits(\DateTime $_start): bool
+    {
+              if( intval($_start->format("m")) === intval(getdate()["mon"]) )
+                {
+                    if (intval($_start->format("d")) - intval(getdate()["mday"]) <= 5  )
+                    {
+                        return true;
+                    }
+                }
+                return false;
+    }
+
+
+    public function CreateNotification(Reservation $reservation,string $message, User $user): Notification
+    {
+        $notifToSend = new Notification();
+        $notifToSend->setReservation($reservation)->setMessage($message)->setReceiver($user);
+
+        return $notifToSend;
+
+    }
+
 
     public function countNotifications(): int
     {

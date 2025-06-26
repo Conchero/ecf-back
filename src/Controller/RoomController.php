@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Entity\Room;
 use App\Form\RoomForm;
 use App\Model\SearchData;
@@ -13,6 +14,7 @@ use App\Service\UploadService;
 use App\Repository\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ReservationRepository;
+use App\Service\NotificationService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -191,8 +193,10 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
             'reservations' => $reservations,
         ]);
     }
+
+
     #[Route('/reservation/{id}/edit', name: 'reservation_edit', methods: ['GET', 'POST'])]
-    public function reservationEdit(int $id, Request $request, ReservationRepository $reservationRepository): Response
+    public function reservationEdit(int $id, Request $request, ReservationRepository $reservationRepository, NotificationService $ns): Response
     {
         $reservation = $reservationRepository->find($id);
         if (!$reservation || $reservation->getClient() !== $this->getUser()) {
@@ -218,6 +222,8 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
             if ($reservation->getStatus() === 'accepted') {
                 $reservation->setStatus('pending');
             }
+                 $ns->CheckReservation5DayLimits($reservation->getReservationStart());
+
             $this->em->flush();
             $this->addFlash('success', 'Réservation modifiée.');
             return $this->redirectToRoute('my_reservations');
@@ -228,6 +234,8 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
             'reservation' => $reservation,
         ]);
     }
+
+
 
     #[Route('/reservation/{id}/delete', name: 'reservation_delete', methods: ['POST'])]
     public function reservationDelete(int $id, Request $request, ReservationRepository $reservationRepository): RedirectResponse
@@ -258,7 +266,7 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
         return $this->redirectToRoute('my_reservations');
     }
     #[Route('/room/{slug}/reserver', name: 'room_reserver', methods: ['GET', 'POST'])]
-    public function reserver(string $slug, Request $request, ReservationRepository $reservationRepository, RoomRepository $roomRepository): Response
+    public function reserver(string $slug, Request $request, ReservationRepository $reservationRepository, RoomRepository $roomRepository, NotificationService $ns): Response
     {
         $room = $roomRepository->findOneBySlug($slug);
         if (!$room) {
@@ -308,6 +316,8 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
                     break;
                 }
             }
+
+
             if ($overlap) {
                 $this->addFlash('danger', 'La période sélectionnée est déjà réservée.');
             } else {
@@ -317,8 +327,13 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
                 $this->em->persist($reservation);
                 $this->em->flush();
                 $this->addFlash('success', 'Votre demande de réservation a bien été enregistrée.');
+
+                 $ns->CheckReservation5DayLimits($reservation->getReservationStart());
+
                 return $this->redirectToRoute('my_reservations');
             }
+
+
         }
 
         return $this->render('room/reserver.html.twig', [
