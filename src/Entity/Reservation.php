@@ -134,6 +134,7 @@ private ?Room $rentedRoom = null;
     {
         return $this->status === 'rejected';
     }
+    
 
 
 }
