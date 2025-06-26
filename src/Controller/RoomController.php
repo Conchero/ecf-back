@@ -12,6 +12,7 @@ use App\Form\SearchTypeForm;
 use App\Form\ReservationForm;
 use App\Service\UploadService;
 use App\Repository\RoomRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\ReservationRepository;
 use App\Service\NotificationService;
@@ -266,7 +267,7 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
         return $this->redirectToRoute('my_reservations');
     }
     #[Route('/room/{slug}/reserver', name: 'room_reserver', methods: ['GET', 'POST'])]
-    public function reserver(string $slug, Request $request, ReservationRepository $reservationRepository, RoomRepository $roomRepository, NotificationService $ns): Response
+    public function reserver(string $slug, Request $request, ReservationRepository $reservationRepository, RoomRepository $roomRepository, UserRepository $userRepository, NotificationService $ns): Response
     {
         $room = $roomRepository->findOneBySlug($slug);
         if (!$room) {
@@ -328,7 +329,20 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
                 $this->em->flush();
                 $this->addFlash('success', 'Votre demande de réservation a bien été enregistrée.');
 
-                 $ns->CheckReservation5DayLimits($reservation->getReservationStart());
+                if ($ns->CheckReservation5DayLimits($reservation->getReservationStart()))
+                {
+                    $admin = $userRepository->findOneByRole("ROLE_ADMIN");
+                    // if ($admin)
+                    // {
+                    //     dd($admin);
+                    // }
+                    if ($admin)
+                    {
+                       $notifAlert = $ns->CreateNotification($reservation,"Une réservation est proche de sa date de début", $admin);
+                        $this->em->persist($notifAlert);
+                        $this->em->flush();
+                    }
+                }
 
                 return $this->redirectToRoute('my_reservations');
             }
