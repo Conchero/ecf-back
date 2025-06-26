@@ -64,7 +64,7 @@ final class RoomController extends AbstractController
             $this->em->flush();
 
             $this->addFlash('success', "La salle a été créée avec succès.");
-            return $this->redirectToRoute('app_room');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('room/new.html.twig', [
@@ -155,14 +155,14 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
 
         if (!$room) {
             $this->addFlash('danger', "La salle n'existe pas");
-            return $this->redirectToRoute('app_room');
+            return $this->redirectToRoute('app_home');
         }
 
         $this->em->remove($room);
         $this->em->flush();
 
         $this->addFlash('success', "Salle supprimée avec succès");
-        return $this->redirectToRoute('app_room');
+        return $this->redirectToRoute('app_home');
     }
 
     public function search(Request $request, RoomRepository $roomRepository): Response
