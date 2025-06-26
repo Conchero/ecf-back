@@ -24,6 +24,7 @@
                     {% if is_granted('ROLE_ADMIN') %}
                         <li><a href="{{ path('admin') }}">Mon dashboard</a></li>
                         <li><a href="{{ path('room_new') }}">Rédiger une annonce</a></li>
+                        <li><a href="{{ path('my_list') }}">Mes annonces</a></li>
                         <li><a href="{{ path('app_logout') }}">Déconnexion</a></li>
                     {% else %}
                         <li><a href="{{ path('my_reservations') }}">Mes réservations</a></li>

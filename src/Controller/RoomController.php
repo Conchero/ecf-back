@@ -191,6 +191,17 @@ public function edit(string $slug, Request $request, UploadService $us): Respons
             'reservations' => $reservations,
         ]);
     }
+     #[Route('/mes-annonces', name: 'my_list', methods: ['GET'])]
+    public function myRooms(RoomRepository $roomRepository): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $admin = $this->getUser();
+        $rooms = $roomRepository->findBy(['owner' => $admin]);
+
+        return $this->render('annonce/annonces.html.twig', [
+            'annonces' => $rooms,
+        ]);
+    }
     #[Route('/reservation/{id}/edit', name: 'reservation_edit', methods: ['GET', 'POST'])]
     public function reservationEdit(int $id, Request $request, ReservationRepository $reservationRepository): Response
     {

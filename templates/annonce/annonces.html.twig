@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes annonces{% endblock %}
+
+{% block body %}
+<h1 class="text-2xl font-bold text-center my-6">Mes annonces</h1>
+<div class="max-w-3xl mx-auto">
+    {% if annonces is empty %}
+        <p class="text-center text-gray-600">Vous n'avez aucune annonce.</p>
+    {% else %}
+        <table class="min-w-full bg-white shadow rounded-lg">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4">Salle</th>
+                    <th class="py-2 px-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in annonces %}
+                    <tr>
+                        <td class="py-2 px-4">{{ room.title }}</td> 
+                        <td class="py-2 px-4">
+                            <a href="{{ path('room_edit', {'slug': room.slug}) }}" class="text-blue-600 hover:underline mr-2">Modifier</a>
+                            <form action="{{ path('room_delete', {'slug': room.slug}) }}" method="post" style="display:inline" onsubmit="return confirm('Confirmer la suppression ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ room.id) }}">
+                                <button type="submit" class="text-red-600 hover:underline">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}
